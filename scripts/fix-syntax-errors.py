@@ -13,13 +13,11 @@ import os
 import re
 from pathlib import Path
 
-
 def fix_method_chaining(content):
     """Fix missing parentheses in method chaining"""
     # Find patterns like .get("key").get("subkey") and fix to .get("key").get("subkey")
     content = re.sub(r"(\.\w+\([^)]*\))(\w+\()", r"\1.\2", content)
     return content
-
 
 def fix_datetime_formatting(content):
     """Fix datetime function calls without proper parentheses"""
@@ -27,13 +25,11 @@ def fix_datetime_formatting(content):
     content = re.sub(r"(now\(\))(\w+\()", r"\1.\2", content)
     return content
 
-
 def fix_string_issues(content):
     """Fix string formatting issues"""
     # Fix patterns like foo = """text""" to foo = """text"""
     content = re.sub(r'=\s*\.\s*"""', r'= """', content)
     return content
-
 
 def fix_file(file_path):
     """Apply all fixes to a file"""
@@ -56,7 +52,6 @@ def fix_file(file_path):
     except Exception as e:
         print(f"Error processing {file_path}: {str(e)}")
         return False
-
 
 def main():
     parser = argparse.ArgumentParser(description="Fix common syntax errors in Python files")
@@ -94,7 +89,6 @@ def main():
             print(f"Fixed: {file}")
 
     print(f"Processed {len(filtered_files)} files, fixed {files_fixed} files")
-
 
 if __name__ == "__main__":
     main()

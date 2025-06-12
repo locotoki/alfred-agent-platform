@@ -9,7 +9,6 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-
 @pytest.fixture(scope="session")
 def http_client() -> Generator[requests.Session, None, None]:
     """Create HTTP client with retry logic."""
@@ -24,7 +23,6 @@ def http_client() -> Generator[requests.Session, None, None]:
     session.mount("https://", adapter)
     yield session
     session.close()
-
 
 @pytest.fixture(scope="session")
 def wait_for_services():
@@ -51,12 +49,11 @@ def wait_for_services():
                     pytest.fail(f"Service {service} failed to start")
                 time.sleep(2)
 
-
 @pytest.fixture
 def alfred_base_url():
     """Get Alfred API base URL."""
-    return os.getenv("ALFRED_BASE_URL", "http://localhost:8011")
-
+    return os.getenv("A
+RED_BASE_URL", "http://localhost:8011")
 
 @pytest.fixture
 def slack_webhook_url():

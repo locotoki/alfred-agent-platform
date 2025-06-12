@@ -9,6 +9,8 @@ from slack_bolt import App
 from slack_bolt.adapter.fastapi import SlackRequestHandler
 
 from libs.a2a_adapter import (
+    
+,
     A2AEnvelope,
     PolicyMiddleware,
     PubSubTransport,
@@ -17,7 +19,6 @@ from libs.a2a_adapter import (
 from libs.agent_core.health import create_health_app
 
 logger = structlog.get_logger(__name__)
-
 # Initialize services
 pubsub_transport = PubSubTransport(project_id=os.getenv("GCP_PROJECT_ID", "alfred-agent-platform"))
 
@@ -31,7 +32,6 @@ slack_app = App(
     token=os.environ.get("SLACK_BOT_TOKEN"),
     signing_secret=os.environ.get("SLACK_SIGNING_SECRET"),
 )
-
 
 @slack_app.command("/alfred")
 async def handle_alfred_command(ack, body, client):
@@ -75,7 +75,6 @@ async def handle_alfred_command(ack, body, client):
             text="Sorry, something went wrong. Please try again later.",
         )
 
-
 async def handle_ping(client, channel_id, user_id):
     """Handle ping command"""
     envelope = A2AEnvelope(intent="PING", content={"message": "ping", "user_id": user_id})
@@ -91,7 +90,6 @@ async def handle_ping(client, channel_id, user_id):
         await client.chat_postMessage(
             channel=channel_id, text="Failed to create ping task. Please try again."
         )
-
 
 async def handle_trend_analysis(client, channel_id, user_id, query):
     """Handle trend analysis command"""
@@ -127,7 +125,6 @@ async def handle_trend_analysis(client, channel_id, user_id, query):
             channel=channel_id, text="Failed to start trend analysis. Please try again."
         )
 
-
 async def show_help(client, channel_id):
     """Show help message"""
     help_text = """
@@ -140,7 +137,6 @@ async def show_help(client, channel_id):
     """
 
     await client.chat_postMessage(channel=channel_id, text=help_text)
-
 
 # Create FastAPI app
 @asynccontextmanager
@@ -156,7 +152,6 @@ async def lifespan(app: FastAPI):
     await supabase_transport.disconnect()
     logger.info("alfred_bot_stopped")
 
-
 app = FastAPI(title="Alfred Bot", lifespan=lifespan)
 
 # Add health check endpoints
@@ -165,7 +160,6 @@ app.mount("/health", health_app)
 
 # Add Slack handler
 slack_handler = SlackRequestHandler(slack_app)
-
 
 @app.post("/slack/events")
 async def slack_events(request: Request):

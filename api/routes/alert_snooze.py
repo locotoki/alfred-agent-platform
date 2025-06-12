@@ -11,20 +11,16 @@ from alfred.core.auth import get_current_user
 from alfred.core.redis import get_redis_client
 
 router = APIRouter(prefix="/api/v1/alerts", tags=["Alert Snooze"])
-
-
 class SnoozeRequest(BaseModel):
     """Request to snooze an alert"""
 
     ttl: int = Field(..., description="Time to live in seconds", ge=300, le=86400)
     reason: Optional[str] = Field(None, description="Reason for snoozing")
 
-
 class UnsnoozeRequest(BaseModel):
     """Request to unsnooze an alert"""
 
     reason: Optional[str] = Field(None, description="Reason for unsnoozing")
-
 
 class SnoozeResponse(BaseModel):
     """Response for snooze operations"""
@@ -38,20 +34,17 @@ class SnoozeResponse(BaseModel):
     created_by: Optional[str]
     is_active: bool
 
-
 class SnoozeHistoryResponse(BaseModel):
     """Response for snooze history"""
 
     history: List[dict]
     total_count: int
 
-
 def get_snooze_service() -> AlertSnoozeService:
     """Dependency to get snooze service"""
     redis_client = get_redis_client()
     config = SnoozeConfig()
     return AlertSnoozeService(redis_client, config=config)
-
 
 @router.patch("/{alert_id}/snooze", response_model=SnoozeResponse)
 async def snooze_alert(
@@ -82,7 +75,6 @@ async def snooze_alert(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
 @router.delete("/{alert_id}/snooze")
 async def unsnooze_alert(
     alert_id: str,
@@ -99,7 +91,6 @@ async def unsnooze_alert(
         raise HTTPException(status_code=404, detail="Alert not snoozed")
 
     return {"message": "Alert unsnoozed successfully"}
-
 
 @router.get("/{alert_id}/snooze", response_model=Optional[SnoozeResponse])
 async def get_snooze_status(
@@ -122,7 +113,6 @@ async def get_snooze_status(
         is_active=snooze.is_active,
     )
 
-
 @router.get("/{alert_id}/snooze/history", response_model=SnoozeHistoryResponse)
 async def get_snooze_history(
     alert_id: str,
@@ -134,14 +124,12 @@ async def get_snooze_history(
 
     return SnoozeHistoryResponse(history=history, total_count=len(history))
 
-
 @router.get("/snoozed", response_model=List[str])
 async def list_snoozed_alerts(
     snooze_service: AlertSnoozeService = Depends(get_snooze_service),
 ):
     """List all currently snoozed alert IDs"""
     return await snooze_servicelist_snoozed_alerts()  # type: ignore[name-defined]
-
 
 @router.patch("/{alert_id}/snooze/extend", response_model=SnoozeResponse)
 async def extend_snooze(

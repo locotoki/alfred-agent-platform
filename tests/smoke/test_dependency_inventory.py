@@ -10,14 +10,12 @@ from pathlib import Path
 
 import pytest
 
-
 def test_dependency_inventory_exists():
     """Test that the dependency inventory CSV file exists."""
     repo_root = Path(__file__).parent.parent.parent
     inventory_path = repo_root / "metrics" / "dependency_inventory.csv"
 
     assert inventory_path.exists(), "dependency_inventory.csv should exist"
-
 
 def test_dependency_inventory_has_data():
     """Test that the dependency inventory has at least one row of data."""
@@ -32,7 +30,6 @@ def test_dependency_inventory_has_data():
         rows = list(reader)
 
     assert len(rows) >= 1, "dependency_inventory.csv should have at least 1 row of data"
-
 
 def test_dependency_inventory_format():
     """Test that the dependency inventory has the correct CSV format."""
@@ -58,7 +55,6 @@ def test_dependency_inventory_format():
             assert (
                 "location" in first_row and first_row["location"]
             ), "location field should not be empty"
-
 
 def test_dependency_inventory_has_common_packages():
     """Test that the inventory includes some expected common packages."""

@@ -9,7 +9,6 @@ import pytest
 pytestmark = pytest.mark.xfail(reason="pre-existing async bug, see #220", strict=False)
 import requests
 
-
 def wait_for_service(url: str, timeout: int = 30):
     """Wait for a service to become available."""
     start_time = time.time()
@@ -22,7 +21,6 @@ def wait_for_service(url: str, timeout: int = 30):
             pass
         time.sleep(1)
     return False
-
 
 @pytest.mark.integration
 def test_explainer_smoke():

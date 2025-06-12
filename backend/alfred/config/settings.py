@@ -2,7 +2,6 @@
 
 import os
 
-
 class Settings:
     """Application settings with environment variable support"""
 
@@ -25,7 +24,6 @@ class Settings:
         if not cls.ALERT_DB_URI:
             raise ValueError("ALERT_DB_URI environment variable not set")
         return cls.ALERT_DB_URI
-
 
 # Singleton instance
 settings = Settings()

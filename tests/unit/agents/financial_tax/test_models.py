@@ -4,6 +4,8 @@ import pytest
 from pydantic import ValidationError
 
 from services.agent_bizops.workflows.finance.models import (
+    
+,
     ComplianceCheckRequest,
     ComplianceCheckResponse,
     EntityType,
@@ -17,7 +19,6 @@ from services.agent_bizops.workflows.finance.models import (
 )
 
 # Removed xfail marker for SC-330 async bug
-
 
 class TestTaxCalculationModels:
     """Test cases for Tax Calculation models."""
@@ -65,7 +66,6 @@ class TestTaxCalculationModels:
         assert response.effective_tax_rate == 12.0
         assert response.marginal_tax_rate == 22.0
 
-
 class TestFinancialAnalysisModels:
     """Test cases for Financial Analysis models."""
 
@@ -101,7 +101,6 @@ class TestFinancialAnalysisModels:
         assert len(response.insights) == 1
         assert len(response.recommendations) == 1
 
-
 class TestComplianceCheckModels:
     """Test cases for Compliance Check models."""
 
@@ -133,7 +132,6 @@ class TestComplianceCheckModels:
         assert response.compliance_status == "partially_compliant"
         assert len(response.issues_found) == 1
         assert response.risk_level == "medium"
-
 
 class TestTaxRateModels:
     """Test cases for Tax Rate models."""
@@ -172,7 +170,6 @@ class TestTaxRateModels:
         assert len(response.tax_brackets) == 2
         assert response.standard_deduction == 13850.0
         assert response.special_rates["capital_gains"] == 20.0
-
 
 class TestModelValidation:
     """Test cases for model validation edge cases."""

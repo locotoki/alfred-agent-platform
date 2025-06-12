@@ -13,8 +13,6 @@ from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.trace import Status, StatusCode
 
 logger = structlog.get_logger(__name__)
-
-
 class TracingProvider:
     """Provider for OpenTelemetry tracing functionality"""
 

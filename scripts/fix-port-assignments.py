@@ -15,7 +15,6 @@ PORT_REMAPPINGS = {
     "hubspot-mock": {"old": "8000:8000", "new": "8088:8080"},
 }
 
-
 def fix_port_conflicts(compose_file):
     """Fix port conflicts in docker-compose.yml"""
 
@@ -55,7 +54,6 @@ def fix_port_conflicts(compose_file):
 
     return len(changes_made) > 0
 
-
 def main():
     compose_file = Path("docker-compose.yml")
 
@@ -73,7 +71,6 @@ def main():
         print("  3. Restart services: docker-compose down && docker-compose up -d")
     else:
         print("\n✅ No port conflicts found!")
-
 
 if __name__ == "__main__":
     main()

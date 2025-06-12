@@ -6,7 +6,6 @@ import time
 
 import requests
 
-
 def test_e2e():
     # spin up services
     env = os.environ.copy()

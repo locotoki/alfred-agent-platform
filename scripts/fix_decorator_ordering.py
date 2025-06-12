@@ -8,7 +8,6 @@ This script fixes the order of pytest decorators to ensure they are correctly fo
 import re
 from pathlib import Path
 
-
 def fix_youtube_workflows(file_path):
     """Fix the decorator ordering in YouTube workflow tests."""
     with open(file_path, "r") as f:
@@ -24,7 +23,6 @@ def fix_youtube_workflows(file_path):
         f.write(modified_content)
 
     print(f"Fixed decorator ordering in {file_path}")
-
 
 def fix_class_method_decorators(file_path):
     """Fix the decorator ordering for class methods."""
@@ -58,7 +56,6 @@ def fix_class_method_decorators(file_path):
 
     print(f"Fixed class method decorators in {file_path}")
 
-
 def main():
     """Fix decorator order issues in test files."""
     project_root = Path(__file__).parent.parent
@@ -77,7 +74,6 @@ def main():
     faiss_file = project_root / "tests" / "backend" / "ml" / "test_faiss_index.py"
     if faiss_file.exists():
         fix_class_method_decorators(faiss_file)
-
 
 if __name__ == "__main__":
     main()

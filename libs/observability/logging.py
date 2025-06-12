@@ -4,7 +4,6 @@ from typing import Any, Dict
 
 import structlog
 
-
 def setup_logging(service_name: str, log_level: str = "INFO") -> None:
     """Setup structured logging with structlog"""
     logging.basicConfig(
@@ -30,7 +29,6 @@ def setup_logging(service_name: str, log_level: str = "INFO") -> None:
         wrapper_class=structlog.stdlib.BoundLogger,
         cache_logger_on_first_use=True,
     )
-
 
 def add_service_context(service_name: str):
     """Add service context to all log entries"""

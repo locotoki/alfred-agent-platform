@@ -1,6 +1,9 @@
 """Alfred Core Service - Main application entry point."""
 
 import time
+import httpx
+import json
+from typing import Dict, Any
 
 import structlog
 from fastapi import FastAPI
@@ -10,41 +13,8 @@ from prometheus_client import Counter, Histogram, generate_latest
 # Configure structured logging
 logger = structlog.get_logger()
 
-
-# WhatsApp chat handler (placeholder implementation)
-async def chat_handler(text: str, from_user: str) -> str:
-    """Handle incoming WhatsApp messages and return responses."""
-    logger.info("Processing WhatsApp message", text=text, from_user=from_user)
-
-    # Simple echo response for now - replace with actual AI/agent logic
-    if "hello" in text.lower():
-        return f"Hello {from_user}! How can I help you today?"
-    elif "help" in text.lower():
-        return "I'm Alfred, your AI assistant. I can help with various tasks!"
-    else:
-        return (
-            f"I received your message: '{text}'. This is a placeholder response from Alfred Core."
-        )
-
-
 # Create FastAPI app
 app = FastAPI(title="Alfred Core Service", version="0.9.6")
-
-
-@app.on_event("startup")
-async def startup():
-    """Initialize services on startup."""
-    logger.info("Starting Alfred Core service")
-
-    # Initialize WhatsApp bridge
-    try:
-        from .wa_bridge import start as wa_start
-
-        wa_start(chat_handler)
-        logger.info("WhatsApp bridge initialized")
-    except Exception as e:
-        logger.warning("WhatsApp bridge initialization failed", error=str(e))
-
 
 # Prometheus metrics
 request_count = Counter(
@@ -53,6 +23,27 @@ request_count = Counter(
 request_duration = Histogram(
     "alfred_core_request_duration_seconds", "Request duration", ["method", "endpoint"]
 )
+
+
+async def call_ollama(prompt: str) -> str:
+    """Call Ollama LLM service"""
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.post(
+                "http://llm-service:11434/api/generate",
+                json={
+                    "model": "llama3:8b",
+                    "prompt": f"System: You are Alfred, a helpful AI assistant for the Alfred Agent Platform. Be friendly, helpful, and informative.\n\nHuman: {prompt}\n\nAssistant:",
+                    "stream": False,
+                    "options": {"temperature": 0.7, "num_predict": 500},
+                },
+            )
+            response.raise_for_status()
+            data = response.json()
+            return data.get("response", "I apologize, but I couldn't generate a response.")
+    except Exception as e:
+        logger.error("Error calling Ollama", error=str(e))
+        return f"I encountered an error: {str(e)}"
 
 
 @app.get("/health")
@@ -92,7 +83,12 @@ async def api_status():
         return {
             "api_version": "v1",
             "status": "active",
-            "capabilities": ["agent-orchestration", "task-routing", "metric-collection"],
+            "capabilities": [
+                "agent-orchestration",
+                "task-routing",
+                "metric-collection",
+                "llm-chat",
+            ],
         }
 
 
@@ -102,6 +98,61 @@ async def create_task(task: dict):
     request_count.labels(method="POST", endpoint="/api/v1/tasks", status="201").inc()
     logger.info("Task created", task_id=task.get("id", "unknown"))
     return {"task_id": "task-123", "status": "queued", "message": "Task queued for processing"}
+
+
+@app.post("/api/v1/chat")
+async def chat(request: dict):
+    """Chat endpoint for UI integration."""
+    request_count.labels(method="POST", endpoint="/api/v1/chat", status="200").inc()
+    logger.info("Chat request received", question=request.get("question", ""))
+
+    question = request.get("question", "")
+    model = request.get("model", "llama3:8b")
+
+    try:
+        response = await call_ollama(question)
+
+        return {
+            "response": response,
+            "model": model,
+            "timestamp": int(time.time()),
+            "status": "success",
+        }
+    except Exception as e:
+        logger.error("Error in chat endpoint", error=str(e))
+        return {
+            "response": "I apologize, but I encountered an error processing your request. Please try again.",
+            "model": model,
+            "timestamp": int(time.time()),
+            "status": "error",
+        }
+
+
+@app.post("/query")
+async def query(request: dict):
+    """Alternative query endpoint for compatibility."""
+    request_count.labels(method="POST", endpoint="/query", status="200").inc()
+    logger.info("Query request received", question=request.get("question", ""))
+
+    question = request.get("question", "")
+
+    try:
+        answer = await call_ollama(question)
+
+        return {
+            "answer": answer,
+            "question": question,
+            "timestamp": int(time.time()),
+            "status": "success",
+        }
+    except Exception as e:
+        logger.error("Error in query endpoint", error=str(e))
+        return {
+            "answer": "I apologize, but I encountered an error processing your request.",
+            "question": question,
+            "timestamp": int(time.time()),
+            "status": "error",
+        }
 
 
 if __name__ == "__main__":

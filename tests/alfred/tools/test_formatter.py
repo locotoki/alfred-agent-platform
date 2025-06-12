@@ -6,7 +6,6 @@ import yaml
 
 from alfred.tools.formatter import JsonFormatter, YamlFormatter
 
-
 class TestJsonFormatter:
     """Tests for JsonFormatter class."""
 
@@ -43,7 +42,6 @@ class TestJsonFormatter:
         assert result["name"] == "Alfred"
         assert result["active"] is True
         assert result["items"] == [1, 2, 3]
-
 
 class TestYamlFormatter:
     """Tests for YamlFormatter class."""

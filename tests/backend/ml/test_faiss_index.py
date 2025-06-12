@@ -9,7 +9,6 @@ import pytest
 
 from backend.alfred.ml.faiss_index import AlertSearchEngine, FAISSIndex, SearchResult
 
-
 class TestFAISSIndex:
     """Test FAISS index functionality."""
 
@@ -242,7 +241,6 @@ class TestFAISSIndex:
 
         for _ in range(100):
             import time
-
             start = time.time()
             index.search(query, k=10)
             query_time = (time.time() - start) * 1000  # ms
@@ -251,7 +249,6 @@ class TestFAISSIndex:
         # Check P99 latency
         p99_latency = np.percentile(query_times, 99)
         assert p99_latency < 15  # Must be under 15ms
-
 
 class TestAlertSearchEngine:
     """Test high-level search engine."""

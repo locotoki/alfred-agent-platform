@@ -5,7 +5,6 @@ import os
 import re
 from pathlib import Path  # noqa: F401
 
-
 def fix_syntax_errors(file_path):
     """Fix various syntax errors in Python files"""
     try:
@@ -51,7 +50,6 @@ def fix_syntax_errors(file_path):
         print(f"Error processing {file_path}: {e}")
         return False
 
-
 def main():
     """Scan the codebase and fix common syntax errors"""
     # Define a list of directories we want to process
@@ -83,7 +81,6 @@ def main():
 
     print(f"\nProcessed {total_files} Python files")
     print(f"Fixed syntax errors in {fixed_count} files")
-
 
 if __name__ == "__main__":
     main()

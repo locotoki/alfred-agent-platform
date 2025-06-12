@@ -10,12 +10,16 @@ from libs.a2a_adapter import A2AEnvelope
 from libs.agent_core import BaseAgent
 
 from .chains import (
+    
+,
     ComplianceCheckChain,
     FinancialAnalysisChain,
     RateLookupChain,
     TaxCalculationChain,
 )
 from .models import (
+    
+,
     ComplianceCheckRequest,
     FinancialAnalysisRequest,
     TaxCalculationRequest,
@@ -23,8 +27,6 @@ from .models import (
 )
 
 logger = structlog.get_logger(__name__)
-
-
 class FinancialTaxAgent(BaseAgent):
     """Agent for financial and tax analysis tasks"""
 

@@ -7,7 +7,6 @@ import subprocess
 import sys
 from pathlib import Path  # noqa: F401
 
-
 def run_mypy_and_get_errors():
     """Run mypy and capture the error output"""
     try:
@@ -22,12 +21,10 @@ def run_mypy_and_get_errors():
     except subprocess.CalledProcessError as e:
         return e.stderr.strip().split("\n")
 
-
 def read_error_file(file_path):
     """Read mypy errors from a file"""
     with open(file_path, "r") as f:
         return [line.strip() for line in f if line.strip()]
-
 
 def parse_mypy_errors(error_lines):
     """Parse mypy error output to extract file paths and line numbers"""
@@ -49,7 +46,6 @@ def parse_mypy_errors(error_lines):
             file_errors[file_path][line_num].append(error_msg)
 
     return file_errors
-
 
 def add_type_ignore_comments(file_errors):
     """Add # type: ignore comments to files with mypy errors"""
@@ -93,7 +89,6 @@ def add_type_ignore_comments(file_errors):
 
     return files_modified
 
-
 def main():
     """Auto-add type ignore comments to files with mypy errors"""
     if len(sys.argv) > 1:
@@ -113,7 +108,6 @@ def main():
     files_modified = add_type_ignore_comments(file_errors)
 
     print(f"Modified {files_modified} files")
-
 
 if __name__ == "__main__":
     main()

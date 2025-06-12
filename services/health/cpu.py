@@ -15,7 +15,6 @@ app = FastAPI(
     version="1.0.0",
 )
 
-
 @app.get("/cpu")
 async def cpu_probe():
     """Get current CPU usage percent and load average"""
@@ -28,8 +27,6 @@ async def cpu_probe():
         "load_avg_15m": load_avg_15m,
     }
 
-
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app, host="0.0.0.0", port=9091)

@@ -3,7 +3,6 @@
 import csv
 import sys
 
-
 def extract_p95(csv_path):
     """Extract p95 latency from Locust results CSV and validate threshold."""
     with open(csv_path) as f:
@@ -16,7 +15,6 @@ def extract_p95(csv_path):
                 if float(row["95%"]) > 300:
                     print("ERROR: p95 latency exceeds 300ms", file=sys.stderr)
                     exit(1)
-
 
 if __name__ == "__main__":
     extract_p95(sys.argv[1])  # type: ignore

@@ -9,7 +9,6 @@ import os
 import re
 from pathlib import Path
 
-
 def add_type_ignore_to_file(file_path):
     """Add '# type: ignore' to the top of the file"""
     with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
@@ -42,7 +41,6 @@ def add_type_ignore_to_file(file_path):
         f.write(new_content)
 
     return True
-
 
 def main():
     """Process Python files to add type ignore comments"""
@@ -96,7 +94,6 @@ def main():
 
     print(f"\nProcessed {total_count} Python files")
     print(f"Added '# type: ignore' to {modified_count} files")
-
 
 if __name__ == "__main__":
     main()

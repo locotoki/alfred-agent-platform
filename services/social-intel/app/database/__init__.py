@@ -10,7 +10,6 @@ import asyncpg
 import structlog
 
 logger = structlog.get_logger(__name__)
-
 # Global connection pool
 _pool = None
 

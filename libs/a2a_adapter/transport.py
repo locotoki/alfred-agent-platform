@@ -5,8 +5,6 @@ from typing import Any, Callable, Dict, List, Optional
 import structlog
 
 logger = structlog.get_logger(__name__)
-
-
 class PubSubTransport:
     """Stub implementation of PubSubTransport for social-intel container."""
 
@@ -48,7 +46,6 @@ class PubSubTransport:
             topic=topic or "default-topic",
         )
         return "message-id-stub-task"
-
 
 class SupabaseTransport:
     """Stub implementation of SupabaseTransport for social-intel container."""

@@ -7,7 +7,6 @@ import respx
 
 from services.contact_ingest.app.main import CRM_SYNC_URL, ingest_loop
 
-
 @respx.mock
 def test_ingest_loop(tmp_path):
     # prepare fake data file

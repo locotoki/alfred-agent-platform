@@ -7,7 +7,6 @@ from pathlib import Path
 
 import yaml
 
-
 def update_alert_labels(file_path: Path) -> None:
     """Update alert labels in a single file"""
     with open(file_path, "r") as f:
@@ -73,7 +72,6 @@ def update_alert_labels(file_path: Path) -> None:
     else:
         print(f"No changes needed for {file_path}")
 
-
 def main():
     """Update all alert files"""
     alerts_dir = Path("charts/alerts")
@@ -98,7 +96,6 @@ def main():
             continue
 
     print("Alert label update complete")
-
 
 if __name__ == "__main__":
     main()

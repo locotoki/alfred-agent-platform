@@ -182,7 +182,7 @@ services:
   llm-service:
     image: ollama/ollama:latest
     container_name: llm-service
-    mem_limit: 1g
+    mem_limit: 8g
     ports:
       - 11434:11434
     volumes:
@@ -351,7 +351,7 @@ services:
       com.docker.compose.service: db-postgres
       com.docker.compose.security: hardened
   db-auth:
-    image: supabase/gotrue:v2.132.3
+    image: supabase/gotrue:v2.143.0
     container_name: db-auth
     ports:
       - 9999:9999
@@ -447,10 +447,10 @@ services:
     ports:
       - 3000:3000
     environment:
-      PGRST_DB_URI: postgres://postgres:${POSTGRES_PASSWORD}@db-postgres:5432/postgres
+      PGRST_DB_URI: postgres://postgres:5a2953e749c7af6d0eacad8977830118@db-postgres:5432/postgres?sslmode=disable
       PGRST_DB_SCHEMAS: public,storage,graphql_public
       PGRST_DB_ANON_ROLE: anon
-      PGRST_JWT_SECRET: ${DB_JWT_SECRET:-your-super-secret-jwt-token}
+      PGRST_JWT_SECRET: c92e5a65be174deb6fc58fdbfb75ea022492a497216092f12630650a67f3e90b
       DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@db-postgres:5432/alfred
     # Health check disabled - PostgREST image has no shell or utilities
     # Service is healthy if it starts and responds on port 3000
@@ -733,10 +733,9 @@ services:
       com.docker.compose.service: db-storage-metrics
       prometheus.metrics.port: '9091'
   agent-core:
-    image: ghcr.io/locotoki/agent-core:v0.9.6
     build:
       context: ./services/alfred-core
-    pull_policy: always
+    image: agent-core:local
     container_name: agent-core
     ports:
       - 8011:8011
@@ -879,10 +878,8 @@ services:
       retries: 5
       start_period: 60s
       test:
-        - CMD
-        - curl
-        - -f
-        - http://localhost:8501/health
+        - CMD-SHELL
+        - nc -z localhost 8501 || exit 1
     depends_on:
       vector-db:
         condition: service_started
@@ -1090,10 +1087,10 @@ services:
       - ./services/streamlit-chat:/app
     working_dir: /app
     healthcheck:
-      interval: 30s
-      timeout: 20s
+      interval: 15s
+      timeout: 3s
       retries: 5
-      start_period: 45s
+      start_period: 30s
       test:
         - CMD
         - healthcheck
@@ -1467,10 +1464,8 @@ services:
         condition: service_healthy
     healthcheck:
       test:
-        - CMD
-        - curl
-        - -fsSL
-        - http://localhost:8000/health
+        - CMD-SHELL
+        - nc -z localhost 8000 || exit 1
       interval: 30s
       timeout: 5s
       retries: 3

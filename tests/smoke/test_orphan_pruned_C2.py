@@ -4,7 +4,6 @@ import pathlib
 
 import pytest
 
-
 @pytest.mark.smoke_orphan
 def test_c2_files_removed():
     """Test that all files in C2 manifest have been removed."""

@@ -7,7 +7,6 @@ from sqlalchemy import Column, DateTime, String
 from sqlalchemy.dialects.postgresql import VECTOR  # type: ignore
 from sqlmodel import Field, SQLModel
 
-
 class DocumentChunk(SQLModel, table=True):
     """Document chunk with embedding vector."""
 

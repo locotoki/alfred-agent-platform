@@ -20,7 +20,6 @@ SERVICES = {
     "qdrant": {"port": 6333, "health_endpoint": "/health"},
 }
 
-
 async def check_service_health(service_name: str, config: Dict[str, Any]) -> Dict[str, Any]:
     """Check health of a single service"""
     url = f"http://localhost:{config['port']}{config['health_endpoint']}"
@@ -45,7 +44,6 @@ async def check_service_health(service_name: str, config: Dict[str, Any]) -> Dic
     except Exception as e:
         return {"service": service_name, "status": "error", "url": url, "error": str(e)}
 
-
 async def check_all_services() -> List[Dict[str, Any]]:
     """Check health of all services"""
     tasks = []
@@ -54,7 +52,6 @@ async def check_all_services() -> List[Dict[str, Any]]:
 
     results = await asynciogather(*tasks)  # type: ignore[name-defined]
     return results
-
 
 def print_health_report(results: List[Dict[str, Any]]):
     """Print formatted health report"""
@@ -101,7 +98,6 @@ def print_health_report(results: List[Dict[str, Any]]):
         print("✅ All services are healthy!")
         return True
 
-
 async def main():
     """Main entry point"""
     results = await check_all_services()
@@ -109,7 +105,6 @@ async def main():
 
     # Exit with error code if any services are unhealthy
     sys.exit(0 if all_healthy else 1)
-
 
 if __name__ == "__main__":
     asyncio.run(main())

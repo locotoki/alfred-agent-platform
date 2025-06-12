@@ -5,7 +5,6 @@ from pathlib import Path
 
 import yaml
 
-
 def load_services():
     """Load the canonical services list"""
     with open("services.yaml", "r") as f:
@@ -13,7 +12,6 @@ def load_services():
 
     # Maintain grouped structure for profile assignment
     return services_data
-
 
 def merge_compose_files(services_data):
     """Merge all service compose snippets into a single compose file"""
@@ -52,17 +50,29 @@ def merge_compose_files(services_data):
                             if isinstance(svc_config["environment"], list):
                                 env_vars = svc_config["environment"]
                                 if not any(
-                                    env.startswith("ALFRED_ENVIRONMENT=") for env in env_vars
+                                    env.startswith("A
+RED_ENVIRONMENT=") for env in env_vars
                                 ):
-                                    env_vars.append("ALFRED_ENVIRONMENT=${ALFRED_ENVIRONMENT}")
-                                if not any(env.startswith("ALFRED_LOG_LEVEL=") for env in env_vars):
-                                    env_vars.append("ALFRED_LOG_LEVEL=${ALFRED_LOG_LEVEL}")
+                                    env_vars.append("A
+RED_ENVIRONMENT=${A
+RED_ENVIRONMENT}")
+                                if not any(env.startswith("A
+RED_LOG_LEVEL=") for env in env_vars):
+                                    env_vars.append("A
+RED_LOG_LEVEL=${A
+RED_LOG_LEVEL}")
                             elif isinstance(svc_config["environment"], dict):
                                 env_dict = svc_config["environment"]
-                                if "ALFRED_ENVIRONMENT" not in env_dict:
-                                    env_dict["ALFRED_ENVIRONMENT"] = "${ALFRED_ENVIRONMENT}"
-                                if "ALFRED_LOG_LEVEL" not in env_dict:
-                                    env_dict["ALFRED_LOG_LEVEL"] = "${ALFRED_LOG_LEVEL}"
+                                if "A
+RED_ENVIRONMENT" not in env_dict:
+                                    env_dict["A
+RED_ENVIRONMENT"] = "${A
+RED_ENVIRONMENT}"
+                                if "A
+RED_LOG_LEVEL" not in env_dict:
+                                    env_dict["A
+RED_LOG_LEVEL"] = "${A
+RED_LOG_LEVEL}"
 
                             # Add profile based on category
                             if category == "core":
@@ -85,13 +95,11 @@ def merge_compose_files(services_data):
 
     return final_compose
 
-
 def write_compose_file(compose_data, output_file):
     """Write the generated compose file"""
     with open(output_file, "w") as f:
         yaml.dump(compose_data, f, default_flow_style=False, sort_keys=False)
     print(f"Generated: {output_file}")
-
 
 def main():
     """Generate the complete docker-compose file"""
@@ -107,7 +115,6 @@ def main():
     print(
         f"Profiles: {set(svc.get('profiles', [])[0] for svc in compose_data['services'].values() if svc.get('profiles'))}"  # noqa: E501
     )
-
 
 if __name__ == "__main__":
     main()

@@ -13,8 +13,6 @@ from fastapi import FastAPI, Response
 from .dependency_tracker import DependencyTracker
 
 logger = structlog.get_logger(__name__)
-
-
 def create_health_app(service_name: str, version: str) -> FastAPI:
     """Create a FastAPI app for health checks compliant with the platform standard.
 

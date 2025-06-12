@@ -9,7 +9,6 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
-
 class DashboardValidator:
     """Validates Grafana dashboard JSON files."""
 
@@ -185,7 +184,6 @@ class DashboardValidator:
 
         return all_valid and not self.errors
 
-
 def main():
     """Execute the dashboard validation process."""
     # Default to infra/grafana/dashboards if no path provided
@@ -195,7 +193,6 @@ def main():
     success = validator.run()
 
     sys.exit(0 if success else 1)
-
 
 if __name__ == "__main__":
     main()

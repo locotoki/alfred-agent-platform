@@ -3,7 +3,6 @@
 import pytest
 from playwright.sync_api import Page, expect
 
-
 @pytest.mark.e2e
 def test_contract_review_workflow(page: Page):
     """Test the contract review workflow in agent-bizops"""
@@ -18,7 +17,6 @@ def test_contract_review_workflow(page: Page):
     response_text = page.locator("body").text_content()
     assert "healthy" in response_text
     assert "legal" in response_text
-
 
 @pytest.mark.e2e
 def test_finance_workflow_available(page: Page):

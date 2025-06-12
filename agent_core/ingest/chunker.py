@@ -18,13 +18,11 @@ except ImportError:  # soft-dep for local dev
 MAX_TOKENS = 1024
 OVERLAP = 128
 
-
 def _token_count(text: str) -> int:
     if not tiktoken:
         return len(text.split())  # fallback
     enc = tiktoken.encoding_for_model("gpt-4o")
     return len(enc.encode(text))
-
 
 def chunk(text: str) -> List[str]:
     """Return a list of overlapping chunks.

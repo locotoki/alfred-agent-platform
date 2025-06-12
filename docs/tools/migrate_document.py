@@ -243,7 +243,6 @@ HEADING_PATTERN = re.compile(r"^(#{1,6})\s+(.+)$", re.MULTILINE)
 METADATA_PATTERN = re.compile(r"\*\*([^:]+):\*\*\s*(.*?)(?:\s{2,}|\n)", re.MULTILINE)
 LINK_PATTERN = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
 
-
 class DocumentMigrator:
     """Handles the migration of documentation from one location to another with
     formatting, templates, and metadata additions.
@@ -715,7 +714,6 @@ class DocumentMigrator:
             "dry_run": self.dry_run,
         }
 
-
 def print_migration_report(result: Dict[str, Any]):
     """Print a formatted report of the migration result."""
     print("\n" + "=" * 80)
@@ -753,7 +751,6 @@ def print_migration_report(result: Dict[str, Any]):
 
     print("\nMigration completed successfully!")
     print("=" * 80)
-
 
 def main():
     """Main function to run the script."""
@@ -805,7 +802,6 @@ def main():
 
     # Return appropriate exit code
     sys.exit(0 if result.get("success", False) else 1)
-
 
 if __name__ == "__main__":
     main()

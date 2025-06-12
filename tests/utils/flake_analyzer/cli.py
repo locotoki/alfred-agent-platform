@@ -1,11 +1,10 @@
-#\!/usr/bin/env python3
+# \!/usr/bin/env python3
 """CLI tool for flake detection analysis."""
 import argparse
 import json
 import sys
 
 from . import analyze, emit_github_summary
-
 
 def main() -> int:
     """Main CLI entry point."""
@@ -49,7 +48,6 @@ def main() -> int:
         print(f"📁 Results saved to {args.output}")
 
     return 0
-
 
 if __name__ == "__main__":
     sys.exit(main())

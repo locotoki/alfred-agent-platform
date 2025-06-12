@@ -40,7 +40,7 @@ jobs:
           mkdir -p reports
           
           # Start services
-          docker-compose -f docker-compose.yml up -d --wait || true
+          docker compose -f docker-compose.yml up -d --wait || true
           
           # Wait for services to stabilize
           sleep 30
@@ -55,7 +55,7 @@ jobs:
       
       - name: Upload test report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pytest-reports-${{ matrix.attempt }}
           path: reports/pytest-${{ matrix.attempt }}.json
@@ -64,7 +64,7 @@ jobs:
       - name: Cleanup
         if: always()
         run: |
-          docker-compose -f docker-compose.yml down -v --timeout 10 || true
+          docker compose -f docker-compose.yml down -v --timeout 10 || true
 
   analyze-flakes:
     name: Analyze Flake Results
@@ -81,7 +81,7 @@ jobs:
           python-version: '3.11'
       
       - name: Download all test reports
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: reports/
       

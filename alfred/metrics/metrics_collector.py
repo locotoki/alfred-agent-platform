@@ -10,7 +10,6 @@ from flask import Flask, Response, jsonify
 from prometheus_client import REGISTRY, Counter, Gauge, generate_latest
 
 app = Flask(__name__)
-
 # Create metrics
 service_availability = Gauge("service_availability", "Availability of the service", ["service"])
 service_requests_total = Counter(

@@ -10,7 +10,6 @@ if str(project_root) not in sys.path:
 
 import pytest
 
-
 def pytest_collection_modifyitems(config, items):
     """Mark slack_app tests as xfail for SC-320.
 

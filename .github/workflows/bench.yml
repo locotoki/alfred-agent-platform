@@ -15,10 +15,36 @@ jobs:
       - name: Measure cold-start
         id: bench
         run: |
-          START=$(date +%s)
-          docker compose -f bench.compose.yml up -d
-          END=$(date +%s)
-          echo "duration=$((END-START))" >> $GITHUB_OUTPUT
+          # Use the actual cold start benchmark script
+          if [[ -x "./bench/cold_start.sh" ]]; then
+            echo "Running cold start benchmark script..."
+            ./bench/cold_start.sh > cold_start_output.txt 2>&1 || true
+            
+            # Extract the duration from the script output or baseline JSON
+            if [[ -f "bench/cold_start.json" ]]; then
+              duration=$(jq -r '.results[0].mean' bench/cold_start.json 2>/dev/null || echo "0")
+              # Convert to integer seconds (round up)
+              duration_int=$(echo "$duration" | awk '{print int($1+0.5)}')
+              echo "duration=$duration_int" >> $GITHUB_OUTPUT
+              echo "Cold start measured: ${duration}s (rounded to ${duration_int}s)"
+            else
+              echo "Fallback to simple timing..."
+              START=$(date +%s)
+              docker compose -f bench.compose.yml up -d
+              END=$(date +%s)
+              duration=$((END-START))
+              echo "duration=$duration" >> $GITHUB_OUTPUT
+              echo "Simple timing: ${duration}s"
+            fi
+          else
+            echo "Cold start script not found, using simple timing..."
+            START=$(date +%s)
+            docker compose -f bench.compose.yml up -d
+            END=$(date +%s)
+            duration=$((END-START))
+            echo "duration=$duration" >> $GITHUB_OUTPUT
+            echo "Simple timing: ${duration}s"
+          fi
 
       - name: Upload duration artifact
         uses: actions/upload-artifact@v4
@@ -27,8 +53,8 @@ jobs:
           path: ${{ github.workspace }}
           retention-days: 14
 
-      - name: Create P0 issue if >75 s
-        if: ${{ steps.bench.outputs.duration > 75 }}
+      - name: Create P0 issue if >30 s
+        if: ${{ steps.bench.outputs.duration > 30 }}
         uses: actions/github-script@v7
         with:
           script: |
@@ -44,11 +70,11 @@ jobs:
 
             **Severity**: P0 (Critical)
             **Date**: ${date}
-            **Duration**: ${duration}s (SLA: 75s)
+            **Duration**: ${duration}s (SLA: 30s)
             **Workflow Run**: [${context.runId}](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
 
             ### Impact
-            Cold-start time exceeded the 75-second SLA, impacting platform availability and user experience.
+            Cold-start time exceeded the 30-second SLA, impacting platform availability and user experience.
 
             ### Action Required
             1. Investigate recent changes that may have increased startup time
@@ -58,8 +84,8 @@ jobs:
 
             ### Metrics
             - **Actual**: ${duration}s
-            - **Target**: ≤75s
-            - **Breach**: +${duration - 75}s
+            - **Target**: ≤30s
+            - **Breach**: +${duration - 30}s
 
             cc: @locotoki/platform-team`,
               labels: ['P0', 'performance', 'sla-breach', 'cold-start'],
@@ -68,8 +94,8 @@ jobs:
 
             console.log(`Created P0 issue #${issue.data.number}`);
 
-      - name: Fail if >75 s
-        if: ${{ steps.bench.outputs.duration > 75 }}
+      - name: Fail if >30 s
+        if: ${{ steps.bench.outputs.duration > 30 }}
         run: |
-          echo "Cold-start ${steps.bench.outputs.duration}s exceeds 75 s SLA"
+          echo "Cold-start ${steps.bench.outputs.duration}s exceeds 30 s SLA"
           exit 1

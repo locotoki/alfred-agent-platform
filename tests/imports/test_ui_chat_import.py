@@ -9,7 +9,6 @@ import pytest
 if os.getenv("CI"):
     pytest.skip("Streamlit not available in CI", allow_module_level=True)
 
-
 def test_streamlit_chat_imports():
     """Test that streamlit_chat module can be imported."""
     # Add alfred/ui to path
@@ -19,6 +18,5 @@ def test_streamlit_chat_imports():
 
     import streamlit_chat
 
-    # Basic validation
-
+# Basic validation
     assert streamlit_chat is not None

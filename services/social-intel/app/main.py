@@ -26,7 +26,6 @@ from libs.a2a_adapter import PolicyMiddleware, PubSubTransport, SupabaseTranspor
 from libs.agent_core.health import create_health_app
 
 logger = structlog.get_logger(__name__)
-
 # Initialize services
 pubsub_transport = PubSubTransport(project_id=os.getenv("GCP_PROJECT_ID", "alfred-agent-platform"))
 
@@ -51,7 +50,6 @@ async def lifespan(app: FastAPI):
     from app.database import close_pool, get_pool
 
     # Startup
-
     await supabase_transportconnect()
 
     # Initialize database connection pool

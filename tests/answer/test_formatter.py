@@ -1,6 +1,5 @@
 from agent_core.answer.formatter import assemble_answer
 
-
 def test_assemble_basic():
     passages = [
         {"id": 1, "snippet": "Paris is the capital of France.", "score": 0.9},

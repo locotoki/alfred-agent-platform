@@ -2,7 +2,6 @@
 
 from backend.alfred.ml.alert_dataset import load_alert_dataset
 
-
 def test_load_alert_dataset_default():
     """Test loading dataset with default parameters."""
     dataset = load_alert_dataset()
@@ -15,7 +14,6 @@ def test_load_alert_dataset_default():
         assert isinstance(text, str)
         assert isinstance(label, str)
         assert label in ["noise", "critical", "warning"]
-
 
 def test_load_alert_dataset_custom_days():
     """Test loading dataset with custom day parameter."""

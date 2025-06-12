@@ -19,7 +19,6 @@ logger = logging.getLogger(__name__)
 # Redis client (embedded)
 redis_client = None
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Manage app lifecycle - setup and teardown"""
@@ -40,7 +39,6 @@ async def lifespan(app: FastAPI):
     if redis_client:
         await redis_client.close()
 
-
 # Initialize FastAPI with lifespan
 app = FastAPI(lifespan=lifespan)
 
@@ -53,7 +51,6 @@ slack_app = AsyncApp(
 
 # Slack request handler
 handler = AsyncSlackRequestHandler(slack_app)
-
 
 @app.get("/health")
 async def health():
@@ -78,12 +75,10 @@ async def health():
     except Exception as e:
         raise HTTPException(status_code=503, detail=str(e))
 
-
 @app.post("/slack/events")
 async def slack_events(req: Request):
     """Handle Slack events"""
     return await handler.handle(req)
-
 
 # Slack command handler
 @slack_app.command("/alfred")
@@ -131,13 +126,11 @@ async def handle_alfred_command(ack, command, say):
         logger.error(f"Error processing command: {e}")
         await say(f"❌ Error: {str(e)}")
 
-
 # Slack app mention handler
 @slack_app.event("app_mention")
 async def handle_mention(event, say):
     """Handle @alfred mentions"""
     await say(f"Hello <@{event['user']}>! Use `/alfred help` to see available commands.")
-
 
 # Error handler
 @slack_app.error
@@ -146,8 +139,6 @@ async def custom_error_handler(error, body, logger):
     logger.error(f"Error: {error}")
     logger.error(f"Request body: {body}")
 
-
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app, host="0.0.0.0", port=8000)

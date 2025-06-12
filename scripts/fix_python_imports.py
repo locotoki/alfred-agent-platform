@@ -37,7 +37,6 @@ IMPORT_REPLACEMENTS = {
     r"import agent_core\.health": "from libs.agent_core.health import create_health_app",
 }
 
-
 def find_python_files() -> List[Path]:
     """Find all Python files in the codebase.
 
@@ -56,7 +55,6 @@ def find_python_files() -> List[Path]:
                 python_files.append(Path(root) / file)
 
     return python_files
-
 
 def fix_imports_in_file(file_path: Path) -> bool:
     """Fix imports in a single Python file.
@@ -90,7 +88,6 @@ def fix_imports_in_file(file_path: Path) -> bool:
         print(f"Error processing {file_path}: {e}")
         return False
 
-
 def main():
     """Fix imports across the codebase"""
     python_files = find_python_files()
@@ -108,7 +105,6 @@ def main():
         print("\nChanged files:")
         for file_path in changed_files:
             print(f"  - {file_path.relative_to(ROOT_DIR)}")
-
 
 if __name__ == "__main__":
     main()

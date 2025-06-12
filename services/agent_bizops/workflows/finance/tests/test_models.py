@@ -4,6 +4,8 @@ import pytest
 from pydantic import ValidationError
 
 from agents.financial_tax.models import (
+    
+,
     ComplianceCheckRequest,
     ComplianceCheckResponse,
     EntityType,
@@ -15,7 +17,6 @@ from agents.financial_tax.models import (
     TaxRateRequest,
     TaxRateResponse,
 )
-
 
 class TestModels:
     """Test suite for Financial Tax Agent models."""

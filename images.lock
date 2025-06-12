@@ -1,3 +1,4 @@
+agent-core:local
 alfred-agent-platform-v2-social-intel:latest
 alfred-agent-platform-v2-ui-chat
 atlas-rag-gateway:latest
@@ -9,19 +10,18 @@ db-metrics:latest
 db-metrics:latest
 gcr.io/google.com/cloudsdktool/cloud-sdk:latest
 ghcr.io/digital-native-ventures/slack-bot:edge
-ghcr.io/locotoki/agent-core:v0.9.6
 ghcr.io/locotoki/crm-sync:latest
 ghcr.io/locotoki/hubspot-mock:latest
 grafana/grafana:10.2.3
 localhost/alfred-platform/telegram-adapter:latest
-mailhog/mailhog:latest
+mailhog/mailhog:v1.0.1
 mission-control-simplified:latest
 model-registry:latest
 model-router:latest
 oliver006/redis_exporter:v1.55.0
 oliver006/redis_exporter:v1.62.0-alpine
 ollama/ollama:latest
-postgres:15-alpine-hardened
+postgres:15-alpine
 postgres:15.5-alpine
 postgrest/postgrest:v11.2.0
 prom/node-exporter:v1.7.0
@@ -31,6 +31,6 @@ pubsub-metrics:latest
 qdrant/qdrant:v1.7.4
 quay.io/prometheuscommunity/postgres-exporter:latest
 redis:7-alpine
-supabase/gotrue:v2.132.3
-supabase/realtime:v2.25.35
-supabase/studio:20231123-64a766a
+supabase/gotrue:v2.143.0
+supabase/realtime:v2.27.5
+supabase/studio:20240326-5e5586d

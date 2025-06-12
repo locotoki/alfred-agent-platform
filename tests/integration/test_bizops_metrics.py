@@ -5,7 +5,6 @@ from unittest.mock import MagicMock, patch
 import httpx
 import pytest
 
-
 @pytest.mark.integration
 def test_metrics_endpoint_available():
     """Test that metrics endpoint is available and returns Prometheus format."""
@@ -44,7 +43,6 @@ bizops_workflow_operations_total{bizops_workflow="finance",operation_type="tax_c
         assert 'bizops_workflow="finance"' in response.text
         assert 'bizops_workflow="system"' in response.text
 
-
 @pytest.mark.integration
 def test_metrics_contain_expected_labels():
     """Test that metrics contain all expected workflow and operation labels."""
@@ -69,12 +67,10 @@ bizops_workflow_operations_total{bizops_workflow="finance",operation_type="tax_c
     assert 'status="success"' in metrics_content
     assert 'status_code="200"' in metrics_content
 
-
 @pytest.mark.integration
 def test_workflow_path_detection():
     """Test that workflow detection from paths works correctly."""
     from services.agent_bizops.middleware.metrics import PrometheusMetrics
-
     metrics = PrometheusMetrics()
 
     # Test legal workflow paths
@@ -91,12 +87,10 @@ def test_workflow_path_detection():
     # Test unknown paths
     assert metrics.get_workflow_from_path("/unknown/endpoint") == "unknown"
 
-
 @pytest.mark.integration
 def test_operation_type_detection():
     """Test that operation type detection works correctly."""
     from services.agent_bizops.middleware.metrics import PrometheusMetrics
-
     metrics = PrometheusMetrics()
 
     # Test legal operations
@@ -114,17 +108,15 @@ def test_operation_type_detection():
     assert metrics.get_operation_type("/unknown", "GET") == "get_request"
     assert metrics.get_operation_type("/unknown", "POST") == "post_request"
 
-
 @pytest.mark.integration
 def test_metrics_middleware_integration():
     """Test that metrics middleware integrates properly with FastAPI."""
     from fastapi import FastAPI
-    from fastapi.testclient import TestClient
+from fastapi.testclient import TestClient
 
-    from services.agent_bizops.middleware.metrics import setup_metrics_middleware
+from services.agent_bizops.middleware.metrics import setup_metrics_middleware
 
-    # Create test app
-
+# Create test app
     app = FastAPI()
     setup_metrics_middleware(app)
 
@@ -155,15 +147,13 @@ def test_metrics_middleware_integration():
     assert 'bizops_workflow="unknown"' in metrics_text
     assert 'bizops_workflow="legal"' in metrics_text
 
-
 @pytest.mark.integration
 def test_error_metrics_recording():
     """Test that error metrics are properly recorded."""
     from fastapi import FastAPI, HTTPException
-    from fastapi.testclient import TestClient
+from fastapi.testclient import TestClient
 
-    from services.agent_bizops.middleware.metrics import setup_metrics_middleware
-
+from services.agent_bizops.middleware.metrics import setup_metrics_middleware
     app = FastAPI()
     setup_metrics_middleware(app)
 
@@ -197,17 +187,15 @@ def test_error_metrics_recording():
     assert 'bizops_workflow="legal"' in metrics_text
     assert 'bizops_workflow="finance"' in metrics_text
 
-
 @pytest.mark.integration
 def test_duration_metrics_collection():
     """Test that request duration metrics are collected."""
     import asyncio
 
-    from fastapi import FastAPI
-    from fastapi.testclient import TestClient
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
 
-    from services.agent_bizops.middleware.metrics import setup_metrics_middleware
-
+from services.agent_bizops.middleware.metrics import setup_metrics_middleware
     app = FastAPI()
     setup_metrics_middleware(app)
 

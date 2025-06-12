@@ -6,8 +6,6 @@ import structlog
 from prometheus_client import Counter, Gauge, Histogram
 
 logger = structlog.get_logger(__name__)
-
-
 class MetricsCollector:
     def __init__(self, service_name: str):
         self.service_name = service_name

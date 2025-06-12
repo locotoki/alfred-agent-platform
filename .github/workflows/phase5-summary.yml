@@ -189,7 +189,7 @@ jobs:
           cat PHASE5-SUMMARY.md
 
       - name: Upload summary report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: phase5-implementation-summary
           path: PHASE5-SUMMARY.md

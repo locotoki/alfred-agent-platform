@@ -9,7 +9,6 @@ import pytest
 
 from alfred.ml.thresholds import ThresholdConfig, ThresholdService
 
-
 class TestThresholdConfig:
     """Test ThresholdConfig dataclass."""
 
@@ -42,7 +41,6 @@ class TestThresholdConfig:
         assert config.confidence_min == 0.95
         assert config.batch_size == 50
         assert config.learning_rate == 0.001
-
 
 class TestThresholdService:
     """Test ThresholdService functionality."""

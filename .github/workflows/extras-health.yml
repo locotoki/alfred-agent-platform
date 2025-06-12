@@ -6,7 +6,7 @@ on:
       - 'services/agent-atlas/**'
       - 'services/agent-social/**' 
       - 'services/agent-rag/**'
-      - 'docker-compose*.yml'
+      - 'docker compose*.yml'
   workflow_dispatch:
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
           echo "🚀 Starting services with extras profile..."
           
           # Start services with extras profile
-          docker-compose --profile extras up -d --build
+          docker compose --profile extras up -d --build
           
           # Wait for services to start
           echo "⏳ Waiting for services to start..."
@@ -53,7 +53,7 @@ jobs:
             echo "🩺 Checking $service at $endpoint"
             
             # Check if service is running
-            if docker-compose ps --services --filter "status=running" | grep -q "^${service%-stub}$"; then
+            if docker compose ps --services --filter "status=running" | grep -q "^${service%-stub}$"; then
               # Try to reach health endpoint
               if curl -f -s --max-time 10 "$endpoint" > /dev/null; then
                 echo "✅ $service is healthy"
@@ -64,7 +64,7 @@ jobs:
                 
                 # Get container logs for debugging
                 echo "📋 Logs for $service:"
-                docker-compose logs --tail=20 "${service%-stub}" || true
+                docker compose logs --tail=20 "${service%-stub}" || true
               fi
             else
               echo "❌ $service is not running"
@@ -87,7 +87,7 @@ jobs:
           echo "🔍 Validating extras profile configuration..."
           
           # Check that extras services are properly configured
-          extras_services=$(docker-compose config --services --profile extras | sort)
+          extras_services=$(docker compose config --services --profile extras | sort)
           echo "Extras profile services: $extras_services"
           
           # Verify expected services are present
@@ -147,7 +147,7 @@ jobs:
         if: always()
         run: |
           echo "🧹 Cleaning up extras services..."
-          docker-compose --profile extras down -v --timeout 10 || true
+          docker compose --profile extras down -v --timeout 10 || true
       
       - name: Set job status
         if: always()

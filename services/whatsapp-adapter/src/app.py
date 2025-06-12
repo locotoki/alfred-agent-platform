@@ -26,7 +26,6 @@ producer: AIOKafkaProducer  < /dev/null |  None = None
 consumer: AIOKafkaConsumer | None = None
 http: httpx.AsyncClient | None = None
 
-
 @app.on_event("startup")
 async def startup() -> None:
     if not ENABLED:
@@ -47,7 +46,6 @@ async def startup() -> None:
     asyncio.create_task(_drain_outbound())  # background loop
     log.info("Startup complete – Kafka bridge running")
 
-
 @app.on_event("shutdown")
 async def shutdown() -> None:
     if producer:
@@ -57,7 +55,6 @@ async def shutdown() -> None:
     if http:
         await http.aclose()
 
-
 @app.get("/health")
 async def health():
     return {
@@ -65,7 +62,6 @@ async def health():
         "enabled": ENABLED,
         "kafka": bool(producer) and bool(consumer),
     }
-
 
 @app.post("/webhook")
 async def webhook(req: Request):
@@ -78,7 +74,6 @@ async def webhook(req: Request):
     body: Dict[str, Any] = await req.json()
     await producer.send_and_wait(IN_TOPIC, json.dumps(body).encode())
     return {"received": True}
-
 
 async def _drain_outbound() -> None:
     """

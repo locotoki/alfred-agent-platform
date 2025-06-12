@@ -7,7 +7,6 @@ import pytest
 # Temporarily removed skip marker to debug flaky tests
 # pytestmark = pytest.mark.skip(reason="flaky after 13-svc refactor – see #642")
 
-
 class TestDataFlow:
     """Test data flow through the platform."""
 
@@ -46,7 +45,6 @@ class TestDataFlow:
         assert status.get("status") == "completed"
         assert status.get("result") is not None
 
-
 class TestPersistence:
     """Test data persistence across services."""
 
@@ -76,7 +74,6 @@ class TestPersistence:
         retrieved = read_response.json()
         assert retrieved["value"] == test_data["value"]
         assert retrieved["metadata"]["test"] is True
-
 
 class TestErrorHandling:
     """Test error handling and recovery."""
@@ -110,7 +107,6 @@ class TestErrorHandling:
 
         # Should not all be rate limited
         assert responses.count(429) < 10  # Less than half rate limited
-
 
 class TestMetricsCollection:
     """Test metrics collection and reporting."""

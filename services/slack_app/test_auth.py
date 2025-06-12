@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
-
 # Get tokens from environment variables
 bot_token = os.environ.get("SLACK_BOT_TOKEN")
 app_token = os.environ.get("SLACK_APP_TOKEN")
@@ -24,8 +23,7 @@ print("Testing Slack API tokens...")
 # Test the bot token with a simple API call
 try:
     from slack_sdk import WebClient
-    from slack_sdk.errors import SlackApiError
-
+from slack_sdk.errors import SlackApiError
     client = WebClient(token=bot_token)
     response = client.auth_test()
 

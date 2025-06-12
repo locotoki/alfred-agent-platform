@@ -7,6 +7,8 @@ from uuid import uuid4
 import structlog
 
 from libs.a2a_adapter import (
+    
+,
     A2AEnvelope,
     PolicyMiddleware,
     PubSubTransport,
@@ -17,6 +19,8 @@ from libs.agent_core.base_agent import BaseAgent
 # Import chains module but explicitly use each chain by module reference later
 from . import chains
 from .models import (
+    
+,
     ComplianceAuditRequest,
     ContractReviewRequest,
     DocumentAnalysisRequest,
@@ -24,8 +28,6 @@ from .models import (
 )
 
 logger = structlog.get_logger(__name__)
-
-
 class LegalComplianceAgent(BaseAgent):
     def __init__(
         self,

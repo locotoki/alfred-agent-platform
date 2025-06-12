@@ -188,6 +188,134 @@ class OpenAIAdapter(LLMAdapter):
         return len(text) // 4
 
 
+class OllamaAdapter(LLMAdapter):
+    """Implement adapter for local Ollama models."""
+
+    def __init__(self, model: str = "llama3:8b", base_url: str = "http://localhost:11434"):
+        """Initialize the Ollama adapter.
+
+        Args:
+            model: Model name to use (default: llama3:8b)
+            base_url: Ollama API base URL (default: http://localhost:11434)
+        """
+        self.model = model
+        self.base_url = base_url.rstrip("/")
+        self._client: Optional[Any] = None
+
+    @property
+    def client(self) -> Any:
+        """Return HTTP client for Ollama API."""
+        if self._client is None:
+            import httpx
+
+            self._client = httpx.AsyncClient(base_url=self.base_url, timeout=60.0)
+        return self._client
+
+    async def generate(
+        self,
+        messages: List[Message],
+        *,
+        stream: bool = False,
+        temperature: float = 0.7,
+        max_tokens: Optional[int] = None,
+        **kwargs: Any,
+    ) -> Union[str, AsyncIterator[str]]:
+        """Generate text using Ollama API."""
+        try:
+            # Convert messages to Ollama format
+            prompt = self._format_messages(messages)
+
+            params = {
+                "model": self.model,
+                "prompt": prompt,
+                "stream": stream,
+                "options": {
+                    "temperature": temperature,
+                },
+            }
+
+            if max_tokens:
+                params["options"]["num_predict"] = max_tokens
+
+            # Add any additional kwargs to options
+            if kwargs:
+                params["options"].update(kwargs)
+
+            if stream:
+                return self._stream_response(params)
+            else:
+                response = await self.client.post("/api/generate", json=params)
+                response.raise_for_status()
+                data = response.json()
+
+                llm_requests_total.labels(model=self.model, status="success").inc()
+
+                # Track token usage
+                if "eval_count" in data:
+                    llm_tokens_total.labels(model=self.model, operation="completion").inc(
+                        data.get("prompt_eval_count", 0) + data.get("eval_count", 0)
+                    )
+
+                return data["response"]
+
+        except Exception as e:
+            llm_requests_total.labels(model=self.model, status="error").inc()
+            logger.error("Ollama API error", error=str(e), model=self.model)
+            raise
+
+    async def _stream_response(self, params: Dict[str, Any]) -> AsyncIterator[str]:
+        """Stream response chunks from Ollama API."""
+        total_tokens = 0
+
+        async with self.client.stream("POST", "/api/generate", json=params) as response:
+            response.raise_for_status()
+            async for line in response.aiter_lines():
+                if line:
+                    import json
+
+                    try:
+                        data = json.loads(line)
+                        if "response" in data and data["response"]:
+                            content = data["response"]
+                            total_tokens += self.estimate_tokens(content)
+                            yield content
+
+                        if data.get("done"):
+                            # Track final token usage
+                            if "eval_count" in data:
+                                actual_tokens = data.get("prompt_eval_count", 0) + data.get(
+                                    "eval_count", 0
+                                )
+                                llm_tokens_total.labels(
+                                    model=self.model, operation="stream_completion"
+                                ).inc(actual_tokens)
+                            break
+                    except json.JSONDecodeError:
+                        continue
+
+    def _format_messages(self, messages: List[Message]) -> str:
+        """Format messages for Ollama prompt."""
+        formatted_parts = []
+
+        for msg in messages:
+            if msg.role == "system":
+                formatted_parts.append(f"System: {msg.content}")
+            elif msg.role == "user":
+                formatted_parts.append(f"Human: {msg.content}")
+            elif msg.role == "assistant":
+                formatted_parts.append(f"Assistant: {msg.content}")
+
+        # Add final prompt for assistant
+        formatted_parts.append("Assistant:")
+
+        return "\n\n".join(formatted_parts)
+
+    def estimate_tokens(self, text: str) -> int:
+        """Estimate token count for Ollama models."""
+        # Rough estimate for Llama models
+        return len(text) // 4
+
+
 class ClaudeAdapter(LLMAdapter):
     """Implement adapter for Anthropic Claude 3 Sonnet model."""
 
@@ -299,7 +427,7 @@ def create_llm_adapter(provider: str = "openai", **kwargs: Any) -> LLMAdapter:
     """Create an LLM adapter instance.
 
     Args:
-        provider: Provider name ("openai" or "claude")
+        provider: Provider name ("openai", "claude", or "ollama")
         **kwargs: Provider-specific parameters
 
     Returns:
@@ -309,5 +437,7 @@ def create_llm_adapter(provider: str = "openai", **kwargs: Any) -> LLMAdapter:
         return OpenAIAdapter(**kwargs)
     elif provider == "claude":
         return ClaudeAdapter(**kwargs)
+    elif provider == "ollama":
+        return OllamaAdapter(**kwargs)
     else:
         raise ValueError(f"Unknown provider: {provider}")

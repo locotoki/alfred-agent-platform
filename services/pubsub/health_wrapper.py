@@ -22,7 +22,8 @@ from prometheus_client import Counter, Gauge
 
 # Configuration
 PUBSUB_HOST = os.environ.get("PUBSUB_HOST", "localhost:8085")
-PROJECT_ID = os.environ.get("ALFRED_PROJECT_ID", "alfred-agent-platform")
+PROJECT_ID = os.environ.get("A
+RED_PROJECT_ID", "alfred-agent-platform")
 SERVICE_NAME = "pubsub-emulator"
 VERSION = "1.0.0"
 
@@ -39,7 +40,6 @@ pubsub_requests_total = Counter("pubsub_requests_total", "Total PubSub requests 
 pubsub_topics = Gauge("pubsub_topics", "Number of topics in PubSub")
 pubsub_subscriptions = Gauge("pubsub_subscriptions", "Number of subscriptions in PubSub")
 pubsub_last_check_time = Gauge("pubsub_last_check_time", "Timestamp of last PubSub health check")
-
 
 def check_pubsub_health() -> Dict[str, str]:
     """Check PubSub emulator connection and status.
@@ -84,7 +84,6 @@ def check_pubsub_health() -> Dict[str, str]:
     finally:
         pubsub_last_check_time.set(time.time())
 
-
 @app.get("/health")
 async def health_check():
     """Detailed health check endpoint"""
@@ -101,7 +100,6 @@ async def health_check():
         "services": {"pubsub": result["status"]},
     }, status_code
 
-
 @app.get("/healthz")
 async def simple_health():
     """Simple health check for container probes"""
@@ -116,14 +114,11 @@ async def simple_health():
     else:
         return {"status": "ok"}
 
-
 @app.get("/metrics")
 async def metrics():
     """Prometheus metrics endpoint"""
     return Response(content=prometheus_client.generate_latest(), media_type="text/plain")
 
-
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app, host="0.0.0.0", port=9091)

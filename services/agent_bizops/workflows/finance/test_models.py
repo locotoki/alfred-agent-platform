@@ -5,7 +5,6 @@ from typing import Any, Dict, List, Optional
 
 from langchain.pydantic_v1 import BaseModel, Field
 
-
 class FilingStatus(str, Enum):
     """Tax filing status"""
 
@@ -14,7 +13,6 @@ class FilingStatus(str, Enum):
     MARRIED_SEPARATE = "married_separate"
     HEAD_OF_HOUSEHOLD = "head_of_household"
     QUALIFYING_WIDOW = "qualifying_widow"
-
 
 class DeductionType(str, Enum):
     """Types of tax deductions"""
@@ -28,7 +26,6 @@ class DeductionType(str, Enum):
     BUSINESS = "business"
     OTHER = "other"
 
-
 class CreditType(str, Enum):
     """Types of tax credits"""
 
@@ -39,7 +36,6 @@ class CreditType(str, Enum):
     RENEWABLE_ENERGY = "renewable_energy"
     OTHER = "other"
 
-
 class SeverityLevel(str, Enum):
     """Severity levels for compliance issues"""
 
@@ -48,7 +44,6 @@ class SeverityLevel(str, Enum):
     HIGH = "high"
     CRITICAL = "critical"
 
-
 class TaxDeduction(BaseModel):
     """Tax deduction model"""
 
@@ -56,14 +51,12 @@ class TaxDeduction(BaseModel):
     amount: float = Field(..., gt=0)
     description: Optional[str] = None
 
-
 class TaxCredit(BaseModel):
     """Tax credit model"""
 
     type: CreditType
     amount: float = Field(..., gt=0)
     description: Optional[str] = None
-
 
 class TaxCalculationRequest(BaseModel):
     """Request model for tax calculation"""
@@ -75,7 +68,6 @@ class TaxCalculationRequest(BaseModel):
     credits: List[Dict[str, Any]] = Field(default_factory=list)
     additional_income: Dict[str, float] = Field(default_factory=dict)
     dependents: int = Field(default=0, ge=0)
-
 
 class TaxCalculationResult(BaseModel):
     """Result model for tax calculation"""
@@ -90,7 +82,6 @@ class TaxCalculationResult(BaseModel):
     marginal_tax_rate: float
     breakdown: Dict[str, Any]
 
-
 class FinancialAnalysisRequest(BaseModel):
     """Request model for financial analysis"""
 
@@ -99,7 +90,6 @@ class FinancialAnalysisRequest(BaseModel):
     time_period: str
     goals: List[str] = Field(default_factory=list)
     constraints: List[str] = Field(default_factory=list)
-
 
 class FinancialAnalysisResult(BaseModel):
     """Result model for financial analysis"""
@@ -113,7 +103,6 @@ class FinancialAnalysisResult(BaseModel):
     projections: Dict[str, Any]
     summary: str
 
-
 class ComplianceIssue(BaseModel):
     """Model for compliance issues"""
 
@@ -124,7 +113,6 @@ class ComplianceIssue(BaseModel):
     remediation: Optional[str] = None
     deadline: Optional[str] = None
 
-
 class ComplianceCheckRequest(BaseModel):
     """Request model for compliance check"""
 
@@ -134,7 +122,6 @@ class ComplianceCheckRequest(BaseModel):
     compliance_areas: List[str] = Field(..., min_items=1)
     review_period: Optional[str] = None
     specific_concerns: List[str] = Field(default_factory=list)
-
 
 class ComplianceCheckResult(BaseModel):
     """Result model for compliance check"""
@@ -147,14 +134,12 @@ class ComplianceCheckResult(BaseModel):
     next_actions: List[str] = Field(default_factory=list)
     review_date: Optional[str] = None
 
-
 class TaxBracket(BaseModel):
     """Model for tax brackets"""
 
     rate: float = Field(..., ge=0, le=100)
     threshold: float = Field(..., ge=0)
     description: Optional[str] = None
-
 
 class TaxRateRequest(BaseModel):
     """Request model for tax rate lookup"""
@@ -164,7 +149,6 @@ class TaxRateRequest(BaseModel):
     entity_type: str = Field(..., pattern="^(individual|corporation|partnership|LLC|trust)$")
     rate_types: List[str] = Field(default_factory=list)
     filing_status: Optional[str] = None
-
 
 class TaxRateResult(BaseModel):
     """Result model for tax rate lookup"""

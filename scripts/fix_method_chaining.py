@@ -5,7 +5,6 @@ import os
 import re
 from pathlib import Path  # noqa: F401
 
-
 def fix_method_chaining(file_path):
     """Fix method chaining syntax errors in Python files"""
     try:
@@ -75,7 +74,6 @@ def fix_method_chaining(file_path):
         print(f"Error processing {file_path}: {e}")
         return False
 
-
 def main():
     """Scan the codebase and fix method chaining syntax errors"""
     # Define a list of directories we want to process
@@ -108,7 +106,6 @@ def main():
 
     print(f"\nProcessed {total_files} Python files")
     print(f"Fixed method chaining in {fixed_count} files")
-
 
 if __name__ == "__main__":
     main()

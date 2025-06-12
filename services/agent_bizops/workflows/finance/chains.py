@@ -6,6 +6,8 @@ from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 
 from .models import (
+    
+,
     ComplianceCheckRequest,
     ComplianceCheckResponse,
     FinancialAnalysisRequest,
@@ -15,7 +17,6 @@ from .models import (
     TaxRateRequest,
     TaxRateResponse,
 )
-
 
 class TaxCalculationChain:
     """Chain for tax calculation processing"""
@@ -78,7 +79,6 @@ Provide a detailed tax calculation including:
 
         return self.output_parser.parse(result)
 
-
 class FinancialAnalysisChain:
     """Chain for financial analysis processing"""
 
@@ -132,7 +132,6 @@ Provide a comprehensive financial analysis including:
 
         return self.output_parser.parse(result)
 
-
 class ComplianceCheckChain:
     """Chain for tax compliance checking"""
 
@@ -185,7 +184,6 @@ Perform a comprehensive compliance check and provide:
         )
 
         return self.output_parser.parse(result)
-
 
 class RateLookupChain:
     """Chain for tax rate lookup"""

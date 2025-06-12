@@ -9,14 +9,12 @@ from pathlib import Path
 
 import pytest
 
-
 def test_deps_inventory_cron_workflow_exists():
     """Test that the dependency inventory cron workflow file exists."""
     repo_root = Path(__file__).parent.parent.parent
     workflow_path = repo_root / ".github" / "workflows" / "deps-inventory-cron.yml"
 
     assert workflow_path.exists(), "deps-inventory-cron.yml workflow should exist"
-
 
 def test_deps_inventory_cron_workflow_content():
     """Test that the workflow has expected content."""
@@ -36,7 +34,6 @@ def test_deps_inventory_cron_workflow_content():
     assert "make deps-inventory" in content, "Workflow should run deps-inventory command"
     assert "github-actions[bot]" in content, "Workflow should use bot user for commits"
 
-
 def test_deps_inventory_cron_workflow_yaml_valid():
     """Test that the workflow YAML is valid."""
     repo_root = Path(__file__).parent.parent.parent
@@ -47,7 +44,6 @@ def test_deps_inventory_cron_workflow_yaml_valid():
 
     try:
         import yaml
-
         with open(workflow_path, "r", encoding="utf-8") as f:
             yaml.safe_load(f)
     except ImportError:

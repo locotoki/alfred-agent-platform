@@ -5,7 +5,6 @@ import re
 
 # Path to health.py
 HEALTH_FILE = "/app/libs/agent_core/health.py"
-
 # Read the current file
 with open(HEALTH_FILE, "r") as file:
     content = file.read()

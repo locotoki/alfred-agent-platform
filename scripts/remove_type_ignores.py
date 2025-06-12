@@ -7,7 +7,6 @@ import subprocess
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-
 def get_python_files(exclude_venv=True):
     """Get all Python files in the project"""
     root_dir = Path(".")
@@ -19,7 +18,6 @@ def get_python_files(exclude_venv=True):
         python_files.append(path)
 
     return python_files
-
 
 def remove_blanket_type_ignore(file_path):
     """Remove '# type: ignore' from the top of the file"""
@@ -37,7 +35,6 @@ def remove_blanket_type_ignore(file_path):
 
     return False
 
-
 def check_mypy(paths=None):
     """Run mypy on the given paths or the entire project"""
     cmd = ["mypy"]
@@ -51,7 +48,6 @@ def check_mypy(paths=None):
         return True, result.stdout
     except subprocess.CalledProcessError as e:
         return False, e.stderr
-
 
 def process_file(file_path, check=True, verbose=False):
     """Process a single file, remove type: ignore and check if mypy still passes"""
@@ -80,7 +76,6 @@ def process_file(file_path, check=True, verbose=False):
     if verbose:
         print(f"Successfully removed type ignore from {file_path}")
     return True
-
 
 def main():
     parser = argparse.ArgumentParser(description="Remove unnecessary '# type: ignore' comments.")
@@ -120,7 +115,6 @@ def main():
         else:
             print("Final mypy check failed. Some files may still have type issues.")
             print(output)
-
 
 if __name__ == "__main__":
     main()

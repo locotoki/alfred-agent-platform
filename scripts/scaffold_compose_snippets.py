@@ -5,7 +5,6 @@ from pathlib import Path
 
 import yaml
 
-
 def load_services():
     """Load the canonical services list"""
     with open("services.yaml", "r") as f:
@@ -17,7 +16,6 @@ def load_services():
         services.extend(service_list)
     return services
 
-
 def create_compose_snippet(service_name, service_dir):
     """Create a default compose.yml snippet for a service"""
     compose_file = service_dir / "compose.yml"
@@ -26,10 +24,16 @@ def create_compose_snippet(service_name, service_dir):
     snippet = {
         "services": {
             service_name: {
-                "image": f"${{ALFRED_REGISTRY}}/alfred-platform/{service_name}:${{ALFRED_VERSION}}",
+                "image": f"${{A
+RED_REGISTRY}}/alfred-platform/{service_name}:${{A
+RED_VERSION}}",
                 "environment": [
-                    "ALFRED_ENVIRONMENT=${ALFRED_ENVIRONMENT}",
-                    "ALFRED_LOG_LEVEL=${ALFRED_LOG_LEVEL}",
+                    "A
+RED_ENVIRONMENT=${A
+RED_ENVIRONMENT}",
+                    "A
+RED_LOG_LEVEL=${A
+RED_LOG_LEVEL}",
                 ],
                 "restart": "unless-stopped",
                 "networks": ["alfred-network"],
@@ -67,7 +71,6 @@ def create_compose_snippet(service_name, service_dir):
     except PermissionError:
         print(f"Skipped: {compose_file} (permission denied)")
 
-
 def main():
     """Scaffold compose snippets for all services"""
     services = load_services()
@@ -84,7 +87,6 @@ def main():
                 print(f"Warning: Cannot create directory for service: {service}")
                 continue
         create_compose_snippet(service, service_dir)
-
 
 if __name__ == "__main__":
     main()

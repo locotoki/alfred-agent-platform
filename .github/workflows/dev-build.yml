@@ -17,15 +17,15 @@ jobs:
       - name: Build representative image (agent-core)
         run: |
           echo "🔨 Building agent-core image..."
-          docker build -t ghcr.io/${{ github.repository }}/alfred-core:${{ github.sha }} \
-            -f services/agent-core/Dockerfile \
-            services/agent-core
+          docker build -t ghcr.io/digital-native-ventures/alfred-agent-platform-v2/alfred-core:${{ github.sha }} \
+            -f services/alfred-core/Dockerfile \
+            services/alfred-core
       
       - name: Start minimal services
         run: |
           echo "🚀 Starting minimal services..."
           export TAG=${{ github.sha }}
-          docker-compose -f docker-compose.slim.yml up -d
+          docker compose -f docker-compose.core.yml up -d
       
       - name: Wait for services to be healthy
         run: |
@@ -51,5 +51,5 @@ jobs:
       - name: Cleanup
         if: always()
         run: |
-          docker-compose -f docker-compose.slim.yml down -v
+          docker compose -f docker-compose.core.yml down -v
           docker image prune -f

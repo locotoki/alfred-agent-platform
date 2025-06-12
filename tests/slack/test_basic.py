@@ -6,19 +6,16 @@ import pytest
 # Import placeholder - this will be replaced when the actual slack_app package is created
 # from alfred.slack import app
 
-
 @pytest.fixture
 def mock_slack_client():
     """Mock Slack client for testing."""
     mock = MagicMock()
     return mock
 
-
 @pytest.fixture
 def mock_ack():
     """Mock ack function for testing."""
     return MagicMock()
-
 
 # Simple smoke test to verify environment variables are available
 @pytest.mark.xfail(
@@ -29,7 +26,6 @@ def test_slack_environment_variables():
     assert os.environ.get("SLACK_BOT_TOKEN"), "SLACK_BOT_TOKEN must be set"
     assert os.environ.get("SLACK_APP_TOKEN"), "SLACK_APP_TOKEN must be set"
     assert os.environ.get("SLACK_SIGNING_SECRET"), "SLACK_SIGNING_SECRET must be set"
-
 
 # This test will be enabled once the slack_app package is created
 @pytest.mark.skip(reason="Waiting for slack_app package implementation")

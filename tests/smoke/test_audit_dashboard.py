@@ -5,12 +5,10 @@ from pathlib import Path
 
 import pytest
 
-
 def test_audit_dashboard_generator_exists():
     """Test that the audit dashboard generator script exists."""
     repo_root = Path(__file__).parent.parent.parent
     assert (repo_root / "scripts" / "gen_audit_dashboard.py").exists()
-
 
 def test_audit_dashboard_can_be_generated():
     """Test that the audit dashboard can be generated without errors."""
@@ -27,7 +25,6 @@ def test_audit_dashboard_can_be_generated():
 
     assert dashboard_path.exists()
 
-
 @pytest.mark.parametrize(
     "badge",
     [
@@ -42,7 +39,6 @@ def test_audit_dashboard_contains_badges(badge):
     with open(repo_root / "docs" / "audit" / "dashboard.md", "r", encoding="utf-8") as f:
         content = f.read()
     assert badge in content
-
 
 @pytest.mark.parametrize(
     "section",
@@ -60,14 +56,12 @@ def test_audit_dashboard_format(section):
         content = f.read()
     assert section in content
 
-
 def test_makefile_audit_dashboard_target():
     """Test that the Makefile has an audit-dashboard target."""
     repo_root = Path(__file__).parent.parent.parent
     with open(repo_root / "Makefile", "r", encoding="utf-8") as f:
         content = f.read()
     assert "audit-dashboard:" in content and "gen_audit_dashboard.py" in content
-
 
 @pytest.mark.parametrize(
     "element", ["name: Audit Dashboard Update", "cron: '25 8 * * 1'", "make audit-dashboard"]
@@ -81,7 +75,6 @@ def test_workflow_file_exists(element):
         content = f.read()
     assert element in content
 
-
 @pytest.mark.parametrize(
     "section", ["### Dependencies", "### Security", "### License Compliance", "**Total Packages**"]
 )
@@ -91,7 +84,6 @@ def test_dashboard_contains_statistics(section):
     with open(repo_root / "docs" / "audit" / "dashboard.md", "r", encoding="utf-8") as f:
         content = f.read()
     assert section in content
-
 
 @pytest.mark.parametrize(
     "link", ["dependency_inventory.csv", "vulnerability_report.csv", "license_report.csv"]

@@ -10,18 +10,14 @@ import requests
 
 # Mark all tests in this module as smoke tests
 pytestmark = pytest.mark.smoke
-
-
 def get_adapter_url() -> str:
     """Get the URL for the Telegram adapter service."""
     return os.environ.get("TELEGRAM_ADAPTER_URL", "http://localhost:3002")
-
 
 @pytest.fixture
 def adapter_url() -> str:
     """Fixture that returns the URL for the Telegram adapter."""
     return get_adapter_url()
-
 
 def test_health_endpoint(adapter_url: str) -> None:
     """Test that the health endpoint returns a 200 status code."""
@@ -30,14 +26,12 @@ def test_health_endpoint(adapter_url: str) -> None:
     assert response.json()["status"] == "healthy"
     assert response.json()["service"] == "telegram-adapter"
 
-
 def test_metrics_endpoint(adapter_url: str) -> None:
     """Test that the metrics endpoint returns a 200 status code."""
     response = requests.get(f"{adapter_url}/metrics", timeout=5)
     assert response.status_code == 200
     # Prometheus metrics are returned as text
     assert "telegram_adapter_requests_total" in response.text
-
 
 def test_webhook_post(adapter_url: str) -> None:
     """Test that the webhook endpoint accepts POST requests."""

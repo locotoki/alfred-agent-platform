@@ -2,7 +2,6 @@
 
 import pytest
 
-
 # Mark failing tests as xfail with appropriate issue references
 def pytest_configure(config):
     """Configure pytest for integration tests."""
@@ -15,7 +14,6 @@ def pytest_configure(config):
         "markers",
         "flaky(reruns=int): mark test as flaky and retry a given number of times",
     )
-
 
 # Handle flaky tests with reruns
 def pytest_collection_modifyitems(config, items):

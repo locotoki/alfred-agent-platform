@@ -5,7 +5,6 @@ import pytest
 # Temporarily removed skip marker to debug flaky tests
 # pytestmark = pytest.mark.skip(reason="flaky after 13-svc refactor – see #642")
 
-
 class TestCoreServices:
     """Test core service health endpoints."""
 
@@ -53,7 +52,6 @@ class TestCoreServices:
         assert data["postgres"]["status"] == "connected"
         assert data["redis"]["status"] == "connected"
 
-
 class TestMetricsEndpoints:
     """Test metrics endpoints."""
 
@@ -75,7 +73,6 @@ class TestMetricsEndpoints:
                 assert "redis_" in response.text
             else:
                 assert "# HELP" in response.text  # Standard prometheus format
-
 
 class TestSlackIntegration:
     """Test Slack integration."""

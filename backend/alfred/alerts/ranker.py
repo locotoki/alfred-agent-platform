@@ -20,7 +20,6 @@ from alfred.core.protocols import AlertProtocol
 from alfred.metrics.protocols import MetricsClient
 from alfred.ml import HFEmbedder
 
-
 @dataclass
 class AlertFeatures:
     """Feature vector for alert ranking"""
@@ -31,7 +30,6 @@ class AlertFeatures:
     temporal_features: np.ndarray
     historical_features: np.ndarray
     service_features: np.ndarray
-
 
 class AlertNoiseRanker:
     """ML-based alert noise ranking using HuggingFace transformers and TF-
