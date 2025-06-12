@@ -9,3 +9,13 @@ groups:
     annotations:
       summary: "Cold-start exceeds 60 s"
       description: "The nightly benchmark cold-start SLA (>60 s) breached for 3 minutes."
+- name: vector-ingest
+  rules:
+  - alert: VectorIngestColdStartTooHigh
+    expr: vector_ingest_cold_start_seconds > 60
+    for: 5m
+    labels:
+      severity: page
+    annotations:
+      summary: "Vector-ingest cold-start SLA breach"
+      description: "cold-start has been >60s for 5m"
