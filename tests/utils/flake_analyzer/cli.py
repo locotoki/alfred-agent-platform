@@ -1,4 +1,4 @@
-#\!/usr/bin/env python3
+# \!/usr/bin/env python3
 """CLI tool for flake detection analysis."""
 import argparse
 import json

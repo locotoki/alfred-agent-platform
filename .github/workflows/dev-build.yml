@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Quick Build & Boot Check
+    name: build
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -17,7 +17,8 @@ jobs:
       - name: Build representative image (agent-core)
         run: |
           echo "🔨 Building agent-core image..."
-          docker build -t ghcr.io/${{ github.repository }}/alfred-core:${{ github.sha }} \
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          docker build -t ghcr.io/${REPO_LOWER}/alfred-core:${{ github.sha }} \
             -f services/agent-core/Dockerfile \
             services/agent-core
       
