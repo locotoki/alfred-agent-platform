@@ -16,7 +16,7 @@ jobs:
         id: measure
         run: |
           export CI=true
-          export COMPOSE_FILE=docker-compose.ci.yml
+          export COMPOSE_FILE=docker compose.ci.yml
           scripts/measure_start.sh
       - name: Fail if over 60 s
         run: |

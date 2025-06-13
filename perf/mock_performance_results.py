@@ -9,7 +9,6 @@ import json
 import random
 from datetime import datetime
 
-
 def generate_mock_results():
     """Generate realistic performance test results."""
     # Simulate 600 requests (10 QPS x 60s)
@@ -78,7 +77,6 @@ def generate_mock_results():
 
     return results
 
-
 def print_harness_style_output(results):
     """Print results in the same format as harness_scaffold.py."""
     print("\n📊 Performance Test Results")
@@ -99,7 +97,6 @@ def print_harness_style_output(results):
         print("\n✅ PASS")
     else:
         print("\n❌ FAIL")
-
 
 if __name__ == "__main__":
     print("🚀 Mock Performance Test: 10 RPS for 60s")

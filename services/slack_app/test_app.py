@@ -9,7 +9,6 @@ from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
-
 # Apply patches to avoid real network calls
 with (
     patch("slack_bolt.App") as mock_app,
@@ -28,8 +27,7 @@ with (
 
     from app import app, flask_app
 
-    # Print success message
-
+# Print success message
     print("⚡️ Bolt app is running! Connected to Slack.")
 
     # Test a sample command

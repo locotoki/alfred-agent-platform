@@ -12,7 +12,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # Initialize FastAPI app
 app = FastAPI(title="Model Router API")
-
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,

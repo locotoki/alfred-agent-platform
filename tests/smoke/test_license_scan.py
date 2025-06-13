@@ -10,7 +10,6 @@ from pathlib import Path
 
 import pytest
 
-
 def test_license_report_exists():
     """Test that the license report CSV file exists."""
     repo_root = Path(__file__).parent.parent.parent
@@ -19,7 +18,6 @@ def test_license_report_exists():
     # Generate report if it doesn't exist
     if not report_path.exists():
         import subprocess
-
         subprocess.run(
             ["python", "scripts/gen_license_report.py"],
             cwd=repo_root,
@@ -28,7 +26,6 @@ def test_license_report_exists():
         )
 
     assert report_path.exists(), "license_report.csv should exist"
-
 
 def test_license_report_format():
     """Test that the license report has the correct CSV format."""
@@ -43,7 +40,6 @@ def test_license_report_format():
         # Check header format
         expected_headers = ["package", "version", "license", "license_classification"]
         assert reader.fieldnames == expected_headers, f"CSV headers should be {expected_headers}"
-
 
 def test_license_report_has_data():
     """Test that the license report has at least one row with license data."""
@@ -63,7 +59,6 @@ def test_license_report_has_data():
         row.get("license") and row["license"] not in ["", "unknown"] for row in rows
     )
     assert has_license_data, "At least one package should have license data"
-
 
 def test_license_report_readable():
     """Test that the license report can be read as CSV."""
@@ -90,14 +85,12 @@ def test_license_report_readable():
     except Exception as e:
         pytest.fail(f"Failed to read license report: {e}")
 
-
 def test_gen_license_script_exists():
     """Test that the license report generation script exists."""
     repo_root = Path(__file__).parent.parent.parent
     script_path = repo_root / "scripts" / "gen_license_report.py"
 
     assert script_path.exists(), "gen_license_report.py should exist"
-
 
 def test_makefile_license_scan_target():
     """Test that the Makefile has a license-scan target."""
@@ -111,7 +104,6 @@ def test_makefile_license_scan_target():
 
     assert "license-scan:" in makefile_content, "Makefile should have license-scan target"
     assert "gen_license_report.py" in makefile_content, "license-scan target should call script"
-
 
 def test_license_classifications():
     """Test that license classifications are reasonable."""
@@ -137,7 +129,6 @@ def test_license_classifications():
     for row in rows:
         classification = row.get("license_classification", "")
         assert classification in valid_classifications, f"Invalid classification: {classification}"
-
 
 def test_unknown_other_ratio():
     """Test that unknown/other licenses are less than 10% of all entries."""

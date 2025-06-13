@@ -24,7 +24,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger("consolidate_docs")
 
-
 class DocumentConsolidator:
     """Class to handle document consolidation process."""
 
@@ -252,7 +251,6 @@ Last consolidated: {datetime.now().strftime('%Y-%m-%d')}.
         else:
             logger.info(f"\nSuccessfully consolidated documents into {self.target_dir}")
 
-
 def main():
     """Main function to run the script."""
     parser = argparse.ArgumentParser(description="Document Consolidation Tool")
@@ -298,7 +296,6 @@ def main():
 
     stats = consolidator.consolidate_documents()
     consolidator.print_summary(stats)
-
 
 if __name__ == "__main__":
     main()

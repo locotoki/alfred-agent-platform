@@ -6,12 +6,10 @@ from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
-
 # Get the tokens
 bot_token = os.environ.get("SLACK_BOT_TOKEN")
 app_token = os.environ.get("SLACK_APP_TOKEN")
 signing_secret = os.environ.get("SLACK_SIGNING_SECRET")
-
 
 # Check token format (without revealing the actual tokens)
 def check_token(token, prefix, name):
@@ -23,7 +21,6 @@ def check_token(token, prefix, name):
     masked = f"{token[:5]}...{token[-4:]}" if len(token) > 10 else "too short"
     return f"{name}: ✅ Valid format - {masked}"
 
-
 # Print the token checks
 print(check_token(bot_token, "xoxb-", "SLACK_BOT_TOKEN"))
 print(check_token(app_token, "xapp-", "SLACK_APP_TOKEN"))
@@ -33,8 +30,7 @@ print(f"SLACK_SIGNING_SECRET: {'✅ Present' if signing_secret else '❌ Missing
 try:
     import requests
 
-    # Attempt to call the auth.test API
-
+# Attempt to call the auth.test API
     response = requests.post(
         "https://slack.com/api/auth.test",
         headers={"Authorization": f"Bearer {bot_token}"},

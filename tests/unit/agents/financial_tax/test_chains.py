@@ -6,12 +6,16 @@ import pytest
 from langchain.chains import LLMChain
 
 from services.agent_bizops.workflows.finance.chains import (
+    
+,
     ComplianceCheckChain,
     FinancialAnalysisChain,
     RateLookupChain,
     TaxCalculationChain,
 )
 from services.agent_bizops.workflows.finance.models import (
+    
+,
     ComplianceCheckRequest,
     ComplianceCheckResponse,
     EntityType,
@@ -24,15 +28,13 @@ from services.agent_bizops.workflows.finance.models import (
     TaxRateResponse,
 )
 
-
 @pytest.fixture
 def mock_llm():
     """Mock LLM for chain tests."""
     from typing import Any, AsyncIterator, Iterator, List, Optional
 
-    from langchain.schema import Generation, LLMResult
-    from langchain.schema.runnable import Runnable, RunnableConfig
-
+from langchain.schema import Generation, LLMResult
+from langchain.schema.runnable import Runnable, RunnableConfig
     class MockLLM(Runnable):
         def invoke(self, input: Any, config: Optional[RunnableConfig] = None, **kwargs: Any) -> Any:
             return "test response"
@@ -85,7 +87,6 @@ def mock_llm():
             return "test response"
 
     return MockLLM()
-
 
 class TestTaxCalculationChain:
     """Test cases for TaxCalculationChain."""
@@ -175,7 +176,6 @@ class TestTaxCalculationChain:
         with pytest.raises(Exception):  # OutputParserException
             await chain.calculate(request)
 
-
 class TestFinancialAnalysisChain:
     """Test cases for FinancialAnalysisChain."""
 
@@ -217,7 +217,6 @@ class TestFinancialAnalysisChain:
         assert len(response.insights) == 1
         assert len(response.recommendations) == 1
 
-
 class TestComplianceCheckChain:
     """Test cases for ComplianceCheckChain."""
 
@@ -253,7 +252,6 @@ class TestComplianceCheckChain:
         assert response.compliance_status == "partially_compliant"
         assert len(response.issues_found) == 1
         assert response.risk_level == "medium"
-
 
 class TestRateLookupChain:
     """Test cases for RateLookupChain."""

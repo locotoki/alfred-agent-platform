@@ -1,12 +1,4 @@
-from datetime import datetime
-from typing import Any, Dict, List, Optional
-from uuid import uuid4
-
-from pydantic import BaseModel, Field
-
-
-class Artifact(BaseModel):
-    key: str
+from datetime import datetimeLFfrom typing import Any, Dict, List, OptionalLFfrom uuid import uuid4LFLFfrom pydantic import BaseModel, FieldLFLFLFclass Artifact(BaseModel):LF    key: str
     uri: str
     mime_type: Optional[str] = None
     description: Optional[str] = None

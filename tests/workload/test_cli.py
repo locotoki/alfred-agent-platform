@@ -7,7 +7,6 @@ from unittest.mock import MagicMock, patch
 import pytest
 import requests
 
-
 class TestWorkloadCLI:
     """Test suite for synthetic workload CLI."""
 
@@ -104,7 +103,6 @@ class TestWorkloadCLI:
         assert "Success=" in result.stdout
         assert "Errors=" in result.stdout
         assert "Duration=" in result.stdout
-
 
 @pytest.mark.integration
 class TestWorkloadIntegration:

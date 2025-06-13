@@ -23,7 +23,6 @@ app = FastAPI(title="Vector Ingest Service")
 # Initialize ML components (lazy loading)
 MODEL: Optional[SentenceTransformer] = None
 
-
 def get_model():
     """Lazy load the sentence transformer model."""
     global MODEL
@@ -32,7 +31,6 @@ def get_model():
         logger.info(f"Loading model: {model_name}")
         MODEL = SentenceTransformer(model_name)
     return MODEL
-
 
 def simple_text_splitter(text: str, chunk_size: int = 512, chunk_overlap: int = 64) -> List[str]:
     """Simple text splitter without langchain dependency."""
@@ -66,7 +64,6 @@ def simple_text_splitter(text: str, chunk_size: int = 512, chunk_overlap: int = 
 
     return chunks
 
-
 @app.get("/health")
 def health():
     """Health check endpoint."""
@@ -77,12 +74,10 @@ def health():
         "model_loaded": MODEL is not None,
     }
 
-
 @app.get("/healthz")
 def healthz():
     """Simple health probe."""
     return {"status": "ok"}
-
 
 @app.get("/")
 def root():
@@ -93,7 +88,6 @@ def root():
         "health": "/health",
         "mode": "simple ML support (no langchain)",
     }
-
 
 @app.post("/ingest")
 async def ingest(event: dict):
@@ -143,7 +137,6 @@ async def ingest(event: dict):
     except Exception as e:
         logger.error(f"Error processing ingestion: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
-
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", "8000"))

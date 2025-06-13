@@ -4,7 +4,6 @@ import pathlib
 
 import pytest
 
-
 @pytest.mark.smoke_orphan
 def test_a1_files_removed():
     """Test that all files in A1 manifest have been removed."""

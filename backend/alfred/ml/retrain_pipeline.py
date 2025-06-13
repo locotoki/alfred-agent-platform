@@ -19,7 +19,6 @@ from sklearn.model_selection import train_test_split
 from alfred.core.protocols import Service
 from alfred.ml.alert_dataset import AlertDataset
 
-
 class RetrainPipeline(Service):
     """Automated ML model retraining pipeline with MLflow tracking"""
 
@@ -312,11 +311,9 @@ class RetrainPipeline(Service):
             print(f"Error getting production model: {e}")
             return None
 
-
 # CLI interface
 if __name__ == "__main__":
     import argparse
-
     parser = argparse.ArgumentParser(description="Alert ML Retraining Pipeline")
     parser.add_argument("--dataset", required=True, help="Dataset source (DB URI or file)")
     parser.add_argument("--mlflow-uri", default="http://localhost:5000", help="MLflow server URI")

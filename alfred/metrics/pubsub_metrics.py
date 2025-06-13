@@ -8,7 +8,6 @@ from flask import Flask, Response, jsonify
 from prometheus_client import REGISTRY, Counter, Gauge, generate_latest
 
 app = Flask(__name__)
-
 # Create metrics
 pubsub_availability = Gauge("pubsub_availability", "Availability of the PubSub emulator")
 pubsub_topics_total = Gauge("pubsub_topics_total", "Total number of PubSub topics")

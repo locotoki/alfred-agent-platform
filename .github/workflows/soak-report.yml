@@ -31,7 +31,7 @@ jobs:
           echo "✅ Ready for promotion to GA" >> soak_report.md
 
       - name: Upload Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: soak-report
           path: soak_report.md

@@ -6,8 +6,6 @@ import redis
 import structlog
 
 logger = structlog.get_logger(__name__)
-
-
 class PolicyMiddleware:
     """Stub implementation of PolicyMiddleware for social-intel container"""
 

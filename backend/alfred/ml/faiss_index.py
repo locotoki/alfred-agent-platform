@@ -14,7 +14,6 @@ import numpy as np
 from alfred.core.protocols import Service
 from alfred.ml.hf_embedder import HFEmbedder
 
-
 @dataclass
 class SearchResult:
     """Result from FAISS similarity search"""
@@ -22,7 +21,6 @@ class SearchResult:
     alert_id: str
     score: float
     metadata: Dict
-
 
 class FAISSIndex(Service):
     """Fast similarity search using FAISS indexes.
@@ -355,7 +353,6 @@ class FAISSIndex(Service):
             if alert_id in self.metadata:
                 self.metadata[alert_id]["deleted"] = True
 
-
 class AlertSearchEngine:
     """High-level search engine combining embedder and index"""
 
@@ -447,11 +444,9 @@ class AlertSearchEngine:
         stats["embedder_model"] = self.embedder.model_name
         return stats
 
-
 # CLI interface
 if __name__ == "__main__":
     import argparse
-
     parser = argparse.ArgumentParser(description="FAISS Alert Search")
     parser.add_argument("--action", choices=["build", "search", "stats"], required=True)
     parser.add_argument("--index-path", default="alert_index", help="Index save/load path")
@@ -502,5 +497,4 @@ if __name__ == "__main__":
         stats = engine.get_performance_stats()
 
         import json
-
         print(json.dumps(stats, indent=2))

@@ -3,14 +3,14 @@ name: Docker Compose Parity Check
 on:
   pull_request:
     paths:
-      - 'docker-compose*.yml'
+      - 'docker compose*.yml'
       - 'services.yaml'
       - '.github/workflows/compose-parity.yml'
   push:
     branches:
       - main
     paths:
-      - 'docker-compose*.yml'
+      - 'docker compose*.yml'
       - 'services.yaml'
 
 jobs:
@@ -24,10 +24,10 @@ jobs:
           sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.35.1/yq_linux_amd64
           sudo chmod +x /usr/local/bin/yq
 
-      - name: Extract services from docker-compose files
+      - name: Extract services from docker compose files
         run: |
-          echo "=== Services in docker-compose files ==="
-          for file in docker-compose*.yml; do
+          echo "=== Services in docker compose files ==="
+          for file in docker compose*.yml; do
             echo "File: $file"
             # Extract service names and filter out comments/non-service entries
             yq eval '.services | keys | .[]' "$file" 2>/dev/null | grep -v '^#' | grep -v '^\s*$' >> compose-services.txt || true
@@ -47,7 +47,7 @@ jobs:
           comm -23 compose-services.txt canonical-services.txt > missing-in-yaml.txt
           if [ -s missing-in-yaml.txt ]; then
             cat missing-in-yaml.txt
-            echo "ERROR: Above services exist in docker-compose but not in services.yaml"
+            echo "ERROR: Above services exist in docker compose but not in services.yaml"
             exit 1
           else
             echo "✓ All compose services are in services.yaml"
@@ -57,9 +57,9 @@ jobs:
           comm -13 compose-services.txt canonical-services.txt > missing-in-compose.txt
           if [ -s missing-in-compose.txt ]; then
             cat missing-in-compose.txt
-            echo "WARNING: Above services exist in services.yaml but not in docker-compose"
+            echo "WARNING: Above services exist in services.yaml but not in docker compose"
           else
-            echo "✓ All canonical services are in docker-compose"
+            echo "✓ All canonical services are in docker compose"
           fi
 
       - name: Summary

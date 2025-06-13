@@ -17,7 +17,6 @@ from .agent import ExplainerAgent
 
 # Configure logging
 logger = structlog.get_logger(__name__)
-
 # Initialize the agent
 agent = ExplainerAgent()
 

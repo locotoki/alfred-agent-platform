@@ -7,7 +7,6 @@ from prometheus_client import Counter, Histogram, Summary, generate_latest
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import PlainTextResponse
 
-
 class PrometheusMetrics:
     """Prometheus metrics collector for BizOps workflows."""
 
@@ -132,10 +131,8 @@ class PrometheusMetrics:
             bizops_workflow=workflow, operation_type=operation_type, status=operation_status
         ).inc()
 
-
 # Global metrics instance
 metrics = PrometheusMetrics()
-
 
 class MetricsMiddleware(BaseHTTPMiddleware):
     """FastAPI middleware for collecting Prometheus metrics."""
@@ -177,7 +174,6 @@ class MetricsMiddleware(BaseHTTPMiddleware):
 
             # Decrement active requests
             metrics.active_requests.labels(bizops_workflow=workflow)._value._value -= 1
-
 
 def setup_metrics_middleware(app):
     """Set up Prometheus metrics middleware."""

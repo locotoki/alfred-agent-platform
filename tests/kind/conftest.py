@@ -1,6 +1,5 @@
 import pytest
 
-
 def pytest_collection_modifyitems(config, items):
     """Skip kind tests for SC-320."""
     for item in items:

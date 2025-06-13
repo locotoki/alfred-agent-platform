@@ -1,0 +1,12 @@
+# Mac-specific override for Apple Silicon (M1/M2/M3)
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.mac.yml up -d
+
+services:
+  llm-service:
+    # Use CPU on Mac, but with more memory for better performance
+    mem_limit: 16g
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+      - OLLAMA_NUM_PARALLEL=4  # Utilize multiple cores
+    # Remove any GPU-specific configurations
+    deploy: null

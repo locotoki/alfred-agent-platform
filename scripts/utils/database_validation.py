@@ -10,7 +10,6 @@ import structlog
 from dotenv import load_dotenv
 
 logger = structlog.get_logger(__name__)
-
 REQUIRED_TABLES = [
     "tasks",
     "task_results",
@@ -37,7 +36,6 @@ REQUIRED_EXTENSIONS = [
     "pg_cron",
     "vector",
 ]
-
 
 async def validate_database():
     """Validate database schema against requirements"""
@@ -122,7 +120,6 @@ async def validate_database():
     except Exception as e:
         logger.error("database_validation_failed", error=str(e))
         return False
-
 
 if __name__ == "__main__":
     asyncio.run(validate_database())

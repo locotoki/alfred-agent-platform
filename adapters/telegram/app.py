@@ -15,6 +15,8 @@ from fastapi import FastAPI, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from prometheus_client import (
     CONTENT_TYPE_LATEST,
+    
+,
     CollectorRegistry,
     Counter,
     Histogram,
@@ -70,8 +72,9 @@ if not TELEGRAM_BOT_TOKEN:
 bot_app = Application.builder().token(TELEGRAM_BOT_TOKEN or "").build()
 
 # Alfred Core service connection - adjust as needed for your environment
-ALFRED_CORE_URL = os.getenv("ALFRED_CORE_URL", "http://agent-core:8011")
-
+A
+RED_CORE_URL = os.getenv("A
+RED_CORE_URL", "http://agent-core:8011")
 
 async def route_to_alfred(user_id: str, message: str) -> Optional[str]:
     """Route the message to Alfred Core service and get a response.
@@ -90,7 +93,6 @@ async def route_to_alfred(user_id: str, message: str) -> Optional[str]:
         logger.error(f"Error routing message to Alfred: {e}")
         return None
 
-
 # Command handler for /start
 async def start_command(update: Update, context):
     """Send a message when the command /start is issued."""
@@ -100,7 +102,6 @@ async def start_command(update: Update, context):
         f"Hello {user.first_name}! I am Alfred, your personal assistant."
     )
 
-
 # Command handler for /help
 async def help_command(update: Update, context):
     """Send a message when the command /help is issued."""
@@ -108,7 +109,6 @@ async def help_command(update: Update, context):
     await update.message.reply_text(
         "I can help you with a variety of tasks. Just send me a message!"
     )
-
 
 # Message handler for text messages
 async def message_handler(update: Update, context):
@@ -134,7 +134,6 @@ async def message_handler(update: Update, context):
     else:
         await update.message.reply_text("Sorry, I couldn't process your request at the moment.")
 
-
 # Register handlers
 bot_app.add_handler(CommandHandler("start", start_command))
 bot_app.add_handler(CommandHandler("help", help_command))
@@ -142,7 +141,6 @@ bot_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message_hand
 
 # Start the bot in webhook mode
 WEBHOOK_URL = os.getenv("WEBHOOK_URL")
-
 
 @app.post("/telegram/webhook", status_code=status.HTTP_200_OK)
 async def telegram_webhook(req: Request) -> dict:
@@ -169,13 +167,11 @@ async def telegram_webhook(req: Request) -> dict:
         )
         return {"ok": False, "error": str(e)}
 
-
 @app.get("/health", status_code=status.HTTP_200_OK)
 async def health_check() -> dict:
     """Health check endpoint."""
     REQUEST_COUNT.labels(method="GET", endpoint="/health", status_code="200").inc()
     return {"status": "healthy", "service": "telegram-adapter"}
-
 
 @app.get("/metrics", status_code=status.HTTP_200_OK)
 async def metrics() -> Any:

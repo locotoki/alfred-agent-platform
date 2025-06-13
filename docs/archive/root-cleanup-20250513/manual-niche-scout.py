@@ -16,8 +16,7 @@ from datetime import datetime, timedelta
 # Check if we have the required libraries
 try:
     import googleapiclient.discovery
-    import matplotlib.pyplot as plt
-
+import matplotlib.pyplot as plt
 except ImportError:
     print("Installing required dependencies...")
     os.system("pip install aiohttp google-api-python-client matplotlib numpy")
@@ -27,7 +26,6 @@ import matplotlib.pyplot as plt
 
 # API Key from environment or direct input
 API_KEY = os.environ.get("YOUTUBE_API_KEY", "AIzaSyDG7o4pRFOjRQzGcsNrc-fmF-O77EbfZDM")
-
 # Enhanced category and subcategory definitions
 CATEGORY_MAPPING = {
     "kids": {
@@ -186,18 +184,15 @@ CATEGORY_MAPPING = {
     },
 }
 
-
 def build_youtube_client():
     """Build and return a YouTube API client."""
     return googleapiclient.discovery.build("youtube", "v3", developerKey=API_KEY)
-
 
 def parse_duration(duration_str):
     """Parse ISO 8601 duration string to seconds."""
     import re
 
-    # Parse the duration string
-
+# Parse the duration string
     pattern = r"PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?"
     match = re.match(pattern, duration_str)
     if not match:
@@ -208,7 +203,6 @@ def parse_duration(duration_str):
     seconds = int(match.group(3) or 0)
 
     return hours * 3600 + minutes * 60 + seconds
-
 
 def calculate_freshness_score(published_at):
     """Calculate a freshness score based on publish date."""
@@ -230,7 +224,6 @@ def calculate_freshness_score(published_at):
             return 0.2
     except Exception:
         return 0.5  # Default if we can't parse date
-
 
 async def search_videos(query, max_results=10, youtube=None, published_after=None):
     """Search for videos using YouTube API."""
@@ -308,7 +301,6 @@ async def search_videos(query, max_results=10, youtube=None, published_after=Non
 
     return videos
 
-
 async def get_channel_details(channel_ids, youtube=None):
     """Get detailed information about specific channels."""
     if not channel_ids:
@@ -370,7 +362,6 @@ async def get_channel_details(channel_ids, youtube=None):
             channels.append(channel_data)
 
     return channels
-
 
 def identify_video_pattern(videos):
     """Identify patterns in successful videos."""
@@ -441,7 +432,6 @@ def identify_video_pattern(videos):
         "best_upload_day": top_day,
         "best_upload_hour": top_hour if top_hour != -1 else "Unknown",
     }
-
 
 def generate_visualization_guide(niches, category, subcategory):
     """Generate a visualization guide based on the analysis."""
@@ -520,7 +510,6 @@ def generate_visualization_guide(niches, category, subcategory):
         "top_recommendations": [],
         "content_strategy": [],
     }
-
 
 async def analyze_niche(category, subcategory):
     """Run the full Niche Scout analysis."""
@@ -812,7 +801,6 @@ async def analyze_niche(category, subcategory):
             print(f"- {rec['niche']}: {rec['why']}")
 
     return result
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Manual Niche Scout Workflow")

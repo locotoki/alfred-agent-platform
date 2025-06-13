@@ -12,7 +12,6 @@ from typing import Dict, List, Set, Tuple
 import structlog
 
 logger = structlog.get_logger(__name__)
-
 ALLOWED_LICENCES = {
     "Apache-2.0",
     "Apache Software License",

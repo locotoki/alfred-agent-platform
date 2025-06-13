@@ -1,17 +1,14 @@
 import pytest
 
-
 def pytest_addoption(parser):
     """Add command line option to run benchmarks."""
     parser.addoption(
         "--run-benchmark", action="store_true", default=False, help="run benchmark tests"
     )
 
-
 def pytest_configure(config):
     """Add benchmark marker to pytest."""
     config.addinivalue_line("markers", "benchmark: mark test as a benchmark test")
-
 
 def pytest_collection_modifyitems(config, items):
     """Skip benchmark tests by default.

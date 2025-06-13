@@ -11,7 +11,6 @@ import os
 import re
 from pathlib import Path
 
-
 def classify_file(file_path: str) -> str:
     """
     Classify a file as USED or ORPHAN based on predefined rules.
@@ -135,7 +134,6 @@ def classify_file(file_path: str) -> str:
     # Default - mark remaining files as USED to be on the safe side
     return "USED"
 
-
 def main() -> None:
     """Process raw_file_list.txt and generate inventory.csv with classifications."""
     # Get the directory of this script
@@ -176,7 +174,6 @@ def main() -> None:
     print(f"  - USED:       {used_count} ({used_count/total_count*100:.1f}%)")
     print(f"  - ORPHAN:     {orphan_count} ({orphan_count/total_count*100:.1f}%)")
     print(f"Results written to {output_file}")
-
 
 if __name__ == "__main__":  # pragma: no cover
     main()

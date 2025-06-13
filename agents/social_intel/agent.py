@@ -5,8 +5,6 @@ from typing import Any, Dict
 import structlog
 
 logger = structlog.get_logger(__name__)
-
-
 class SocialIntelAgent:
     """Stub implementation of SocialIntelAgent"""
 

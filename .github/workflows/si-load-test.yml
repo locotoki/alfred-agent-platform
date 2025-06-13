@@ -86,7 +86,7 @@ jobs:
           node scripts/assert_k6_si.js
 
       - name: Upload results as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: load-test-results
           path: services/social-intel/k6-results.json

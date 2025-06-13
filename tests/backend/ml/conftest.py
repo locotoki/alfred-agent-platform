@@ -10,7 +10,6 @@ if str(project_root) not in sys.path:
 
 import pytest
 
-
 def pytest_collection_modifyitems(config, items):
     """Mark ML-related tests as xfail for SC-320.
 

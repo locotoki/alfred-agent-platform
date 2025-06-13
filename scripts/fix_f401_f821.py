@@ -5,7 +5,6 @@ import subprocess
 from typing import Dict  # noqa: F401
 from typing import List, Set
 
-
 def run_flake8() -> str:
     """Run flake8 and return the output as a string."""
     try:
@@ -16,7 +15,6 @@ def run_flake8() -> str:
     except subprocess.CalledProcessError as e:
         print(f"Error running flake8: {e}")
         return e.stdout if e.stdout else ""
-
 
 def parse_violations(flake8_output: str) -> Dict[str, List[str]]:
     """Parse flake8 output and return a dictionary of violations by error code."""
@@ -29,7 +27,6 @@ def parse_violations(flake8_output: str) -> Dict[str, List[str]]:
             violations["F821"].append(line)
 
     return violations
-
 
 def fix_f401_violations(violations: List[str]) -> Set[str]:
     """Remove unused imports (F401)."""
@@ -118,7 +115,6 @@ def fix_f401_violations(violations: List[str]) -> Set[str]:
 
     return fixed_files
 
-
 def fix_f821_violations(violations: List[str]) -> Set[str]:
     """Add type ignores for undefined name errors (F821)."""
     fixed_files = set()
@@ -170,7 +166,6 @@ def fix_f821_violations(violations: List[str]) -> Set[str]:
 
     return fixed_files
 
-
 def main():
     # Run flake8 and get violations
     print("Running flake8 to find violations...")
@@ -197,7 +192,6 @@ def main():
         print("\nFixed files:")
         for file in sorted(all_fixed):
             print(f"  - {file}")
-
 
 if __name__ == "__main__":
     main()

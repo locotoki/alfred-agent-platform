@@ -6,7 +6,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List
 
-
 def read_csv_file(file_path: Path) -> List[Dict[str, str]]:
     """Read a CSV file and return list of dictionaries."""
     if not file_path.exists():
@@ -18,7 +17,6 @@ def read_csv_file(file_path: Path) -> List[Dict[str, str]]:
     except Exception as e:
         print(f"Error reading {file_path}: {e}", file=sys.stderr)
         return []
-
 
 def compute_stats(deps_data, vuln_data, license_data):
     """Compute all statistics from the three data sources."""
@@ -70,7 +68,6 @@ def compute_stats(deps_data, vuln_data, license_data):
             "unknown_ratio": unknown_ratio,
         },
     }
-
 
 def generate_dashboard(stats):
     """Generate the audit dashboard markdown content."""
@@ -155,7 +152,6 @@ Manual updates can be triggered by running `make audit-dashboard`.
 """
     return content
 
-
 def main():
     """Generate audit dashboard from CSV reports."""
     repo_root = Path(__file__).parent.parent
@@ -175,7 +171,6 @@ def main():
     print(
         f"Summary: {stats['deps']['total']:,} deps, {stats['vulns']['total']:,} vulns, {stats['licenses']['unknown_ratio']:.1f}% unknown"
     )
-
 
 if __name__ == "__main__":
     main()

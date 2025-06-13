@@ -11,6 +11,8 @@ import pytest
 
 from alfred.remediation import settings
 from alfred.remediation.graphs import (
+    
+,
     complete_remediation,
     escalate_issue,
     probe_health,
@@ -19,7 +21,6 @@ from alfred.remediation.graphs import (
     should_retry_or_complete,
     wait_for_stabilization,
 )
-
 
 @pytest.fixture
 def basic_state():
@@ -31,7 +32,6 @@ def basic_state():
         "retry_count": 0,
         "start_timestamp": time.time(),
     }
-
 
 @pytest.fixture
 def mock_requests():
@@ -48,7 +48,6 @@ def mock_requests():
         mock.get.return_value = health_response
 
         yield mock
-
 
 @patch("remediation.settings.get_webhook_url")
 def test_restart_service_success(mock_get_webhook, basic_state, mock_requests):
@@ -67,7 +66,6 @@ def test_restart_service_success(mock_get_webhook, basic_state, mock_requests):
     assert result["restart_status"] == "success"
     assert "restart_timestamp" in result
 
-
 @patch("remediation.settings.get_webhook_url")
 def test_restart_service_failure(mock_get_webhook, basic_state, mock_requests):
     """Test failed service restart."""
@@ -81,7 +79,6 @@ def test_restart_service_failure(mock_get_webhook, basic_state, mock_requests):
     assert result["restart_status"] == "failed"
     assert result["error"] == "Connection error"
 
-
 @patch("remediation.graphs.time.sleep")
 def test_wait_for_stabilization(mock_sleep, basic_state):
     """Test waiting for service stabilization."""
@@ -93,7 +90,6 @@ def test_wait_for_stabilization(mock_sleep, basic_state):
     # Verify state updates
     assert result["wait_completed"] is True
     assert "wait_timestamp" in result
-
 
 @patch("remediation.graphs.time.sleep")
 def test_wait_for_stabilization_default(mock_sleep):
@@ -107,7 +103,6 @@ def test_wait_for_stabilization_default(mock_sleep):
     # Verify state updates
     assert result["wait_completed"] is True
     assert "wait_timestamp" in result
-
 
 def test_probe_health_success(basic_state, mock_requests):
     """Test successful health probe."""
@@ -125,7 +120,6 @@ def test_probe_health_success(basic_state, mock_requests):
     assert result["health_ok"] is True
     assert "probe_timestamp" in result
 
-
 def test_probe_health_failure(basic_state, mock_requests):
     """Test failed health probe."""
     mock_requests.get.return_value.status_code = 500
@@ -135,7 +129,6 @@ def test_probe_health_failure(basic_state, mock_requests):
     # Verify state updates for failure
     assert result["probe_status_code"] == 500
     assert result["health_ok"] is False
-
 
 def test_probe_health_exception(basic_state, mock_requests):
     """Test exception during health probe."""
@@ -149,7 +142,6 @@ def test_probe_health_exception(basic_state, mock_requests):
     assert result["health_ok"] is False
     assert result["probe_response"] == error_message
     assert result["probe_error"] == error_message  # Verify error is exposed
-
 
 @patch("remediation.settings.MAX_RETRIES", 5)  # Override for this test
 def test_should_retry_or_complete_with_settings():
@@ -165,7 +157,6 @@ def test_should_retry_or_complete_with_settings():
     assert result == "retry"
     assert state["retry_count"] == 5
 
-
 def test_should_retry_or_complete_success():
     """Test decision function when health is ok."""
     state = {"health_ok": True, "retry_count": 1, "max_retries": 3}
@@ -173,7 +164,6 @@ def test_should_retry_or_complete_success():
     result = should_retry_or_complete(state)
 
     assert result == "complete"
-
 
 def test_should_retry_or_complete_retry():
     """Test decision function when health not ok but retries available."""
@@ -184,7 +174,6 @@ def test_should_retry_or_complete_retry():
     assert result == "retry"
     assert state["retry_count"] == 2  # Incremented
 
-
 def test_should_retry_or_complete_escalate():
     """Test decision function when max retries reached."""
     state = {"health_ok": False, "retry_count": 3, "max_retries": 3}
@@ -192,7 +181,6 @@ def test_should_retry_or_complete_escalate():
     result = should_retry_or_complete(state)
 
     assert result == "escalate"
-
 
 def test_complete_remediation(basic_state):
     """Test successful remediation completion."""
@@ -205,7 +193,6 @@ def test_complete_remediation(basic_state):
     assert result["remediation_completed"] is True
     assert result["thread_updated"] is True
     assert "completion_message" in result
-
 
 def test_escalate_issue(basic_state):
     """Test issue escalation."""
@@ -220,7 +207,6 @@ def test_escalate_issue(basic_state):
     assert result["thread_updated"] is True
     assert "escalation_message" in result
 
-
 def test_escalate_issue_with_error(basic_state):
     """Test issue escalation with probe error."""
     basic_state["thread_ts"] = "1234567890.123456"
@@ -233,7 +219,6 @@ def test_escalate_issue_with_error(basic_state):
     # Verify error is included in escalation message
     assert "Last error: Connection timeout" in result["escalation_message"]
     assert result["remediation_status"] == "escalated"
-
 
 @patch("remediation.graphs.time.sleep")
 @patch("remediation.settings.get_webhook_url")
@@ -255,7 +240,6 @@ def test_restart_then_verify_graph_success(mock_get_webhook, mock_sleep, mock_re
     assert result["remediation_status"] == "success"
     assert result["remediation_completed"] is True
     assert result["health_ok"] is True
-
 
 @patch("remediation.graphs.time.sleep")
 @patch("remediation.settings.get_webhook_url")
@@ -282,7 +266,6 @@ def test_restart_then_verify_graph_retry_then_success(mock_get_webhook, mock_sle
     assert result["remediation_completed"] is True
     assert result["health_ok"] is True
 
-
 @patch("remediation.graphs.time.sleep")
 @patch("remediation.settings.get_webhook_url")
 def test_restart_then_verify_graph_escalation(mock_get_webhook, mock_sleep, mock_requests):
@@ -304,7 +287,6 @@ def test_restart_then_verify_graph_escalation(mock_get_webhook, mock_sleep, mock
     assert result["remediation_status"] == "escalated"
     assert result["remediation_completed"] is True
     assert result["health_ok"] is False
-
 
 @patch("remediation.settings.MAX_RETRIES", 5)
 @patch("remediation.settings.DEFAULT_WAIT_SECONDS", 10)

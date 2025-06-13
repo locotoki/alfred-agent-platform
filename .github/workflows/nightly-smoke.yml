@@ -17,13 +17,13 @@ jobs:
         run: |
           echo "🔨 Building all service images..."
           export TAG=${{ github.sha }}
-          docker-compose build --parallel
+          docker compose build --parallel
       
       - name: Start all services
         run: |
           echo "🚀 Starting full stack..."
           export TAG=${{ github.sha }}
-          docker-compose up -d
+          docker compose up -d
       
       - name: Wait for services
         run: |
@@ -32,7 +32,7 @@ jobs:
           
           # More sophisticated wait
           for i in {1..30}; do
-            if docker-compose ps | grep -v "Up" | grep -v "NAME"; then
+            if docker compose ps | grep -v "Up" | grep -v "NAME"; then
               echo "Services still starting..."
               sleep 10
             else
@@ -80,7 +80,7 @@ jobs:
       - name: Collect logs on failure
         if: failure()
         run: |
-          docker-compose logs > docker-logs.txt
+          docker compose logs > docker-logs.txt
           docker ps -a > docker-ps.txt
       
       - name: Upload logs
@@ -95,5 +95,5 @@ jobs:
       - name: Cleanup
         if: always()
         run: |
-          docker-compose down -v
+          docker compose down -v
           docker system prune -f

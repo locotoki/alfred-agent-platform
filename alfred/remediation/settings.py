@@ -10,7 +10,6 @@ from typing import Any, Dict
 # Maximum number of retry attempts for service remediation
 # Can be overridden with REMEDIATION_MAX_RETRIES environment variable
 MAX_RETRIES = int(os.environ.get("REMEDIATION_MAX_RETRIES", "3"))
-
 # Default wait time between restart and health probe (in seconds)
 # Can be overridden with REMEDIATION_WAIT_SECONDS environment variable
 DEFAULT_WAIT_SECONDS = int(os.environ.get("REMEDIATION_WAIT_SECONDS", "30"))

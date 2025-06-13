@@ -21,7 +21,6 @@ logger = logging.getLogger(__name__)
 SERVICE_NAME = "template-service"
 SERVICE_VERSION = "0.1.0"
 
-
 # Standard health endpoints
 @app.get("/health")
 async def health() -> Dict[str, Any]:
@@ -39,7 +38,6 @@ async def health() -> Dict[str, Any]:
         },
     }
 
-
 @app.get("/healthz")
 async def healthz() -> Dict[str, str]:
     """Simple health probe endpoint.
@@ -47,7 +45,6 @@ async def healthz() -> Dict[str, str]:
     Used by container orchestrators like Kubernetes for liveness probes.
     """
     return {"status": "ok"}
-
 
 @app.get("/metrics")
 async def metrics() -> Response:
@@ -76,7 +73,6 @@ service_request_duration_seconds_count{{service="{SERVICE_NAME}"}} 0
 """
     return Response(content=metrics_text, media_type="text/plain")
 
-
 # Main service endpoints
 @app.get("/")
 async def root() -> Dict[str, str]:
@@ -87,10 +83,8 @@ async def root() -> Dict[str, str]:
         "description": "Template service for the Alfred Agent Platform",
     }
 
-
 # Main entry point
 if __name__ == "__main__":
     import uvicorn
-
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)

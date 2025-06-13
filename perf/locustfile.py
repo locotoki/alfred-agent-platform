@@ -2,7 +2,6 @@
 
 from locust import HttpUser, between, task
 
-
 class RAGUser(HttpUser):  # type: ignore
     """User class for RAG API performance testing."""
 

@@ -17,16 +17,12 @@ from typing import Dict, List, Set, Tuple
 
 try:
     import tomllib
-
 except ImportError:
     import tomli as tomllib
-
 try:
     from modulegraph import modulegraph
-
 except ImportError:
     modulegraph = None
-
 
 def find_dependency_files(repo_root: Path) -> List[Path]:
     """Find all requirements*.txt and pyproject.toml files in the repo."""
@@ -43,7 +39,6 @@ def find_dependency_files(repo_root: Path) -> List[Path]:
             files.append(toml_file)
 
     return sorted(files)
-
 
 def parse_requirements_txt(file_path: Path) -> List[Tuple[str, str]]:
     """Parse requirements.txt file and extract package names with versions."""
@@ -85,7 +80,6 @@ def parse_requirements_txt(file_path: Path) -> List[Tuple[str, str]]:
 
     return packages
 
-
 def parse_pyproject_toml(file_path: Path) -> List[Tuple[str, str]]:
     """Parse pyproject.toml file and extract dependencies."""
     packages = []
@@ -125,7 +119,6 @@ def parse_pyproject_toml(file_path: Path) -> List[Tuple[str, str]]:
         print(f"Warning: Failed to parse {file_path}: {e}", file=sys.stderr)
 
     return packages
-
 
 def analyze_imports(repo_root: Path) -> Set[str]:
     """Analyze Python files to discover imported packages."""
@@ -172,13 +165,11 @@ def analyze_imports(repo_root: Path) -> Set[str]:
 
     return imports
 
-
 def get_latest_version(package_name: str) -> str:
     """Get the latest version of a package from PyPI."""
     # For now, return empty to avoid network calls and timeouts
     # This can be enhanced later with batch PyPI API calls
     return ""
-
 
 def generate_inventory(repo_root: Path) -> List[Dict[str, str]]:
     """Generate the complete dependency inventory."""
@@ -230,7 +221,6 @@ def generate_inventory(repo_root: Path) -> List[Dict[str, str]]:
 
     return inventory
 
-
 def main():
     """Generate dependency inventory CSV file."""
     repo_root = Path(__file__).parent.parent
@@ -253,7 +243,6 @@ def main():
         writer.writerows(inventory)
 
     print(f"Generated inventory with {len(inventory)} entries: {output_path}")
-
 
 if __name__ == "__main__":
     main()

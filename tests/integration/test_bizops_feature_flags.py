@@ -5,7 +5,6 @@ from unittest.mock import patch
 
 import pytest
 
-
 @pytest.mark.parametrize(
     "workflows_enabled,expected_workflows",
     [
@@ -24,7 +23,6 @@ def test_workflow_registration_with_feature_flags(workflows_enabled, expected_wo
         # Import settings after patching environment
 
         from services.agent_bizops.settings import BizOpsSettings
-
         settings = BizOpsSettings()
 
         # Check that workflows_enabled matches expected
@@ -34,7 +32,6 @@ def test_workflow_registration_with_feature_flags(workflows_enabled, expected_wo
         assert settings.is_workflow_enabled("legal") == ("legal" in expected_workflows)
         assert settings.is_workflow_enabled("finance") == ("finance" in expected_workflows)
         assert settings.is_workflow_enabled("unknown") is False
-
 
 @pytest.mark.integration
 def test_service_health_reflects_enabled_workflows():
@@ -66,16 +63,14 @@ def test_service_health_reflects_enabled_workflows():
                     else:
                         assert workflow not in mock_response["workflows_enabled"]
 
-
 @pytest.mark.integration
 def test_legacy_environment_variable_mapping():
     """Test that legacy environment variables are properly mapped with warnings."""
     import warnings
 
-    from services.agent_bizops.settings import BizOpsSettings, LegacyEnvVarWarning
+from services.agent_bizops.settings import BizOpsSettings, LegacyEnvVarWarning
 
-    # Test legacy LEGAL_COMPLIANCE_API_KEY
-
+# Test legacy LEGAL_COMPLIANCE_API_KEY
     with patch.dict(os.environ, {"LEGAL_COMPLIANCE_API_KEY": "legacy-legal-key"}, clear=True):
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
@@ -108,14 +103,12 @@ def test_legacy_environment_variable_mapping():
             ]
             assert any("FINANCIAL_TAX_API_KEY" in msg for msg in warning_messages)
 
-
 @pytest.mark.integration
 def test_new_environment_variables_take_precedence():
     """Test that new environment variables take precedence over legacy ones."""
     from services.agent_bizops.settings import BizOpsSettings
 
-    # Set both new and old variables
-
+# Set both new and old variables
     env_vars = {
         "BIZOPS_LEGAL_API_KEY": "new-legal-key",
         "LEGAL_COMPLIANCE_API_KEY": "old-legal-key",
@@ -130,12 +123,10 @@ def test_new_environment_variables_take_precedence():
         assert settings.legal_api_key == "new-legal-key"
         assert settings.finance_api_key == "new-finance-key"
 
-
 @pytest.mark.integration
 def test_workflow_case_insensitive():
     """Test that workflow enablement is case-insensitive."""
     from services.agent_bizops.settings import BizOpsSettings
-
     with patch.dict(os.environ, {"WORKFLOWS_ENABLED": "Legal,FINANCE"}, clear=False):
         settings = BizOpsSettings()
 
@@ -147,14 +138,12 @@ def test_workflow_case_insensitive():
         assert settings.is_workflow_enabled("FINANCE") is True
         assert settings.is_workflow_enabled("Finance") is True
 
-
 @pytest.mark.integration
 def test_default_values_when_no_env_vars():
     """Test that appropriate defaults are used when no environment variables are set."""
     from services.agent_bizops.settings import BizOpsSettings
 
-    # Clear all relevant environment variables
-
+# Clear all relevant environment variables
     env_to_clear = [
         "WORKFLOWS_ENABLED",
         "BIZOPS_LEGAL_API_KEY",
@@ -164,10 +153,12 @@ def test_default_values_when_no_env_vars():
         "FINANCIAL_TAX_API_KEY",
         "AGENT_FINANCIAL_API_KEY",
         "BIZOPS_DATABASE_URL",
-        "ALFRED_DATABASE_URL",
+        "A
+RED_DATABASE_URL",
         "DATABASE_URL",
         "BIZOPS_REDIS_URL",
-        "ALFRED_REDIS_URL",
+        "A
+RED_REDIS_URL",
         "REDIS_URL",
     ]
 

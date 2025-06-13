@@ -27,7 +27,7 @@ jobs:
         run: .github/workflow_helpers/build-size.sh
 
       - name: Upload build size report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-size
           path: build-size.txt

@@ -14,7 +14,6 @@ import yaml
 
 from alfred.core.protocols import AlertProtocol
 
-
 @dataclass
 class RuleCondition:
     """Single condition in a rule"""
@@ -70,7 +69,6 @@ class RuleCondition:
         except Exception:
             return False
 
-
 @dataclass
 class GroupingRule:
     """Custom grouping rule"""
@@ -113,7 +111,6 @@ class GroupingRule:
                 key_parts.append(str(value))
 
         return ":".join(key_parts)
-
 
 class RulesEngine:
     """Engine for evaluating custom grouping rules"""

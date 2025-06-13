@@ -4,7 +4,6 @@
 import os
 from datetime import datetime
 
-
 # Mock YouTube API and vector storage
 class MockYouTubeAPI:
     """Mock YouTube API for testing."""
@@ -53,7 +52,6 @@ class MockYouTubeAPI:
             "description": "This is a test video description.",
         }
 
-
 class MockVectorStorage:
     """Mock vector storage for testing."""
 
@@ -72,7 +70,6 @@ class MockVectorStorage:
     async def store_video_vector(self, video_id, video_data, embedding):
         """Mock storing video vectors."""
         print(f"Storing video vector for {video_id}")
-
 
 # Mock SocialIntelligence Agent
 class MockSocialIntelAgent:
@@ -234,7 +231,6 @@ class MockSocialIntelAgent:
             "timestamp": datetime.now().isoformat(),
         }
 
-
 async def test_niche_scout():
     """Test Niche-Scout workflow."""
     agent = MockSocialIntelAgent()
@@ -244,7 +240,6 @@ async def test_niche_scout():
     print(f"\nResult status: {result['status']}")
     print(f"Found {len(result['trending_niches'])} trending niches")
     print(f"Top niche: {result['top_niches'][0]['query']}")
-
 
 async def test_blueprint():
     """Test Blueprint workflow."""
@@ -256,7 +251,6 @@ async def test_blueprint():
     print(f"Seed URL: {result['seed_url']}")
     print(f"Blueprint positioning: {result['blueprint']['positioning']}")
     print(f"Content pillars: {', '.join(result['blueprint']['content_pillars'])}")
-
 
 async def main():
     """Run all tests."""
@@ -270,8 +264,6 @@ async def main():
 
     print("\n=== All tests completed successfully! ===")
 
-
 if __name__ == "__main__":
     import asyncio
-
     asyncio.run(main())

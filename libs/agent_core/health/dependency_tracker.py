@@ -8,8 +8,6 @@ from typing import Dict
 import structlog
 
 logger = structlog.get_logger(__name__)
-
-
 class DependencyTracker:
     """Tracks dependencies and their health status"""
 

@@ -14,7 +14,6 @@ from .intent_router import Intent, IntentRouter
 
 # Create a default router instance
 router = IntentRouter()
-
 # Register common patterns
 router.register_pattern("help", r"(?:can you )?(?:help|assist) (?:me )?(?:with )?(?P<topic>.+)")
 router.register_pattern("summarize", r"(?:can you )?summarize (?P<text>.+)")

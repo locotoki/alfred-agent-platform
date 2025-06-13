@@ -12,7 +12,6 @@ from mlflow.tracking import MlflowClient
 
 from alfred.core.protocols import Service
 
-
 class ModelRegistry(Service):
     """Manages ML model registry and lifecycle"""
 
@@ -342,11 +341,9 @@ class ModelRegistry(Service):
 
         return metadata
 
-
 # CLI interface for model registry operations
 if __name__ == "__main__":
     import argparse
-
     parser = argparse.ArgumentParser(description="Model Registry Management")
     parser.add_argument("--mlflow-uri", default="http://localhost:5000", help="MLflow server URI")
     parser.add_argument("--model-name", default="alert-noise-ranker", help="Model name")

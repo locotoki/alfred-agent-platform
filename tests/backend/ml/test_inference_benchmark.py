@@ -4,12 +4,10 @@ import numpy as np
 import pytest
 from sentence_transformers import SentenceTransformer
 
-
 @pytest.fixture(scope="module")
 def model():
     """Shared model for inference tests."""
     return SentenceTransformer("all-MiniLM-L6-v2")
-
 
 @pytest.mark.benchmark
 def test_single_inference_latency(benchmark, model):
@@ -20,7 +18,6 @@ def test_single_inference_latency(benchmark, model):
 
     # P99 latency must be < 15ms
     assert benchmark.stats["max"] < 0.015  # 15ms
-
 
 @pytest.mark.benchmark
 def test_batch_inference_throughput(benchmark, model):
@@ -37,7 +34,6 @@ def test_batch_inference_throughput(benchmark, model):
 
     # Should process 32 alerts in < 200ms
     assert benchmark.stats["mean"] < 0.2
-
 
 @pytest.mark.benchmark
 def test_large_batch_performance(benchmark, model):
@@ -62,12 +58,10 @@ def test_large_batch_performance(benchmark, model):
     # Should process 1000 alerts in < 5 seconds
     assert benchmark.stats["mean"] < 5.0
 
-
 @pytest.mark.benchmark
 def test_memory_efficiency():
     """Test inference memory usage."""
     import psutil
-
     process = psutil.Process()
 
     model = SentenceTransformer("all-MiniLM-L6-v2")

@@ -41,7 +41,6 @@ redis_last_check_time = Gauge("redis_last_check_time", "Timestamp of last Redis 
 # Redis client
 redis_client = redis.from_url(REDIS_URL)
 
-
 def check_redis_health() -> Dict[str, str]:
     """Check Redis connection and status.
 
@@ -73,7 +72,6 @@ def check_redis_health() -> Dict[str, str]:
     finally:
         redis_last_check_time.set(time.time())
 
-
 @app.get("/health")
 async def health_check():
     """Detailed health check endpoint"""
@@ -90,7 +88,6 @@ async def health_check():
         "services": {"redis": result["status"]},
     }, status_code
 
-
 @app.get("/healthz")
 async def simple_health():
     """Simple health check for container probes"""
@@ -105,14 +102,11 @@ async def simple_health():
     else:
         return {"status": "ok"}
 
-
 @app.get("/metrics")
 async def metrics():
     """Prometheus metrics endpoint"""
     return Response(content=prometheus_client.generate_latest(), media_type="text/plain")
 
-
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app, host="0.0.0.0", port=9091)

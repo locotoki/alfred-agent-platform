@@ -6,7 +6,6 @@ import pytest
 
 from backend.alfred.ml.model_registry import ModelRegistry
 
-
 class TestModelRegistry:
     """Test model registry functionality."""
 

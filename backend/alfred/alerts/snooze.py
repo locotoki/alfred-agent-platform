@@ -16,7 +16,6 @@ from alfred.alerts.protocols import SnoozeService
 from alfred.core.protocols import AlertProtocol
 from alfred.metrics.protocols import MetricsClient
 
-
 @dataclass
 class SnoozeConfig:
     """Configuration for snooze behavior"""
@@ -26,7 +25,6 @@ class SnoozeConfig:
     default_duration: int = 3600  # 1 hour
     auto_unsnooze_on_change: bool = True
     audit_retention_days: int = 30
-
 
 class AlertSnoozeService(SnoozeService):
     """Service for managing alert snoozes with Redis TTL"""
@@ -341,7 +339,6 @@ class AlertSnoozeService(SnoozeService):
         }
 
         import hashlib
-
         hash_str = json.dumps(hash_data, sort_keys=True)
         return hashlib.sha256(hash_str.encode()).hexdigest()
 

@@ -1,0 +1,30 @@
+name: smoke-platform
+on:
+  pull_request:
+    paths:
+      - 'docker-compose*.yml'
+      - 'scripts/**'
+      - '.github/workflows/smoke-platform.yml'
+jobs:
+  mac:
+    runs-on: macos-14
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start stack (mac)
+        run: |
+          chmod +x scripts/start-mac.sh
+          scripts/start-mac.sh
+      - name: Verify UI
+        run: curl -sf http://localhost:8502/health
+  linux-gpu:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start stack (gpu/cpu fallback)
+        run: |
+          chmod +x scripts/start-gpu.sh
+          scripts/start-gpu.sh
+      - name: Verify UI
+        run: curl -sf http://localhost:8502/health

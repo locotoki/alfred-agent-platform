@@ -15,7 +15,6 @@ from prometheus_client import Counter
 # Import the LLM base class from our custom interface
 # In practice, this would be properly typed
 LLM = Any  # Placeholder for a proper LLM interface
-
 # Set up metrics
 explanations_total = Counter(
     "alfred_alert_explanations_total", "Total alert explanations generated", ["result"]

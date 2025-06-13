@@ -17,7 +17,6 @@ from __future__ import annotations
 
 from typing import Dict, List
 
-
 def assemble_answer(query: str, passages: List[Dict]) -> Dict:  # type: ignore
     """Return assembled answer with citations.
 

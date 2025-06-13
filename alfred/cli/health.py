@@ -10,7 +10,6 @@ from rich.console import Console
 from rich.table import Table
 
 console = Console()
-
 CORE_SERVICES = {
     "alfred-core": {
         "url": "http://localhost:8011/health",

@@ -173,7 +173,6 @@ def pytest_collection_modifyitems(config, items):
 """,
 }
 
-
 def main() -> None:
     """Update all conftest files with import fixes."""
     for directory, content in conftests.items():
@@ -186,7 +185,6 @@ def main() -> None:
         with open(filename, "w") as f:
             f.write(content)
         print(f"Updated {filename}")
-
 
 if __name__ == "__main__":  # pragma: no cover
     main()

@@ -25,7 +25,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger("normalize_filenames")
 
-
 class FilenameNormalizer:
     """Class to handle filename normalization process."""
 
@@ -228,7 +227,6 @@ class FilenameNormalizer:
             for file, error in self.errors:
                 logger.info(f"  {os.path.basename(file)}: {error}")
 
-
 def main():
     """Main function to run the script."""
     parser = argparse.ArgumentParser(
@@ -291,7 +289,6 @@ def main():
     else:
         print(f"\nMapping file written to: {args.output_mapping}")
         print(f"Successfully normalized filenames in {args.staging_dir}")
-
 
 if __name__ == "__main__":
     main()

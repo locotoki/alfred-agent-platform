@@ -3,7 +3,6 @@
 from datetime import datetime
 from typing import Any, Dict
 
-
 class YouTubeNicheScoutAdapter:
     """Adapter for YouTube Niche Scout A2A integration"""
 
@@ -36,7 +35,6 @@ class YouTubeNicheScoutAdapter:
             "timestamp": payload.get("timestamp", datetime.utcnow().isoformat()),
         }
 
-
 class YouTubeBlueprintAdapter:
     """Adapter for YouTube Blueprint A2A integration"""
 
@@ -62,7 +60,6 @@ class YouTubeBlueprintAdapter:
             "blueprint_url": payload.get("blueprint_url", ""),
             "timestamp": payload.get("timestamp", datetime.utcnow().isoformat()),
         }
-
 
 def map_intent_to_adapter(intent: str):
     """Map intent to appropriate adapter"""

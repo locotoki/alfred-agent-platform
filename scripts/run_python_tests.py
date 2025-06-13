@@ -11,8 +11,6 @@ import sys
 from pathlib import Path
 
 ROOT_DIR = Path(__file__).parent.parent
-
-
 def main():
     """Run pytest with proper configuration"""
     # Ensure PYTHONPATH is set correctly
@@ -42,7 +40,6 @@ def main():
         sys.exit(0)
     else:
         sys.exit(result.returncode)
-
 
 if __name__ == "__main__":
     main()

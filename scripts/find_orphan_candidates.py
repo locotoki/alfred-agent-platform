@@ -11,8 +11,6 @@ import pathlib
 import subprocess
 
 EXT = {".sh", ".py", ".ps1"}
-
-
 def main():
     """Find and list orphan script candidates."""
     # Find all script files
@@ -41,7 +39,6 @@ def main():
     for r in rows:
         if r["status"] == "UNKNOWN" and r["path"] not in used:
             print(r["path"])
-
 
 if __name__ == "__main__":
     main()

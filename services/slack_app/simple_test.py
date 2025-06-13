@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
-
 print("Alfred Slack App - Simple Test")
 print("==============================")
 

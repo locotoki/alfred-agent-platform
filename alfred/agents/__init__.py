@@ -9,5 +9,4 @@ from alfred.agents.orchestrator import AgentOrchestrator, router
 
 # Create a default orchestrator instance
 orchestrator = AgentOrchestrator()
-
 __all__ = ["Intent", "IntentRouter", "router", "AgentOrchestrator", "orchestrator"]

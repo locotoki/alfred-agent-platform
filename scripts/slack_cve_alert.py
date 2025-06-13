@@ -18,10 +18,11 @@ from typing import Dict, List
 # Import Alfred utilities
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from alfred.metrics.utils.slack import (
+    
+,
     format_vulnerability_message,
     send_webhook_message,
 )
-
 
 def read_vulnerability_report(report_path: Path) -> List[Dict[str, str]]:
     """Read vulnerability report CSV and return list of vulnerabilities."""
@@ -42,7 +43,6 @@ def read_vulnerability_report(report_path: Path) -> List[Dict[str, str]]:
 
     return vulnerabilities
 
-
 def get_cve_age_days(vuln_id: str) -> int:
     """Estimate CVE age in days based on CVE ID year."""
     if vuln_id.startswith("CVE-"):
@@ -54,7 +54,6 @@ def get_cve_age_days(vuln_id: str) -> int:
         except (IndexError, ValueError):
             pass
     return 0  # Unknown age, treat as new
-
 
 def filter_alertable_vulnerabilities(
     vulnerabilities: List[Dict[str, str]], max_age_days: int = 30
@@ -81,7 +80,6 @@ def filter_alertable_vulnerabilities(
             alertable.append(vuln)
 
     return alertable
-
 
 def main():
     """Generate and send Slack CVE alerts."""
@@ -111,7 +109,6 @@ def main():
         print(f"📤 Notified #sec-alerts of {len(alertable_vulns)} alertable vulnerabilities")
     else:
         print("❌ Failed to send Slack notification")
-
 
 if __name__ == "__main__":
     main()

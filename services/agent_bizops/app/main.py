@@ -38,7 +38,6 @@ setup_metrics_middleware(app)
 # Static workflows configuration - no longer environment-driven
 WORKFLOWS_ENABLED = ["finance", "legal"]
 
-
 @app.get("/health")
 async def health():
     """Health check endpoint."""
@@ -46,14 +45,11 @@ async def health():
         {"status": "healthy", "service": "agent-bizops", "workflows_enabled": WORKFLOWS_ENABLED}
     )
 
-
 @app.get("/")
 async def root():
     """Root endpoint."""
     return {"message": "Agent BizOps Service", "workflows_enabled": WORKFLOWS_ENABLED}
 
-
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app, host="0.0.0.0", port=8080)

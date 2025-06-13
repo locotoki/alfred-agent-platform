@@ -1,0 +1,15 @@
+# GPU-enabled override for systems with NVIDIA GPUs (Windows/Linux)
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.gpu.yml up -d
+
+services:
+  llm-service:
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+      - CUDA_VISIBLE_DEVICES=0

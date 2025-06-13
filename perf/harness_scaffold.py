@@ -26,7 +26,6 @@ SAMPLE_QUERIES = [
     "How does the platform ensure p95 latency stays under 300ms at 10 QPS load?",
 ]
 
-
 def make_request(query_text):
     """Make a single request to the retrieval endpoint."""
     start_time = time.time()
@@ -45,7 +44,6 @@ def make_request(query_text):
     except Exception as e:
         latency_ms = (time.time() - start_time) * 1000
         return {"success": False, "latency_ms": latency_ms, "error": str(e)}
-
 
 def run_load_test():
     """Run the performance test."""
@@ -96,7 +94,6 @@ def run_load_test():
         print(f"\n{'✅ PASS' if p95 < 300 and error_rate < 1 else '❌ FAIL'}")
     else:
         print("❌ No successful requests - check if server is running")
-
 
 if __name__ == "__main__":
     # Quick health check first

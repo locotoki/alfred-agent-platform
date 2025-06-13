@@ -159,7 +159,7 @@ jobs:
           docker stop ${{ matrix.service }}-test || true
           docker rm ${{ matrix.service }}-test || true
 
-  # Integration test with docker-compose
+  # Integration test with docker compose
   integration-test:
     runs-on: ubuntu-latest
     needs: build-monitoring-services
@@ -168,14 +168,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Update docker-compose.yml for testing
+      - name: Update docker compose.yml for testing
         run: |
           # Check if healthcheck-fix.yml exists
           if [ -f "docker-compose.healthcheck-fix.yml" ]; then
             echo "Using docker-compose.healthcheck-fix.yml for testing"
             cp docker-compose.healthcheck-fix.yml docker-compose.monitoring-test.yml
           else
-            echo "Creating test docker-compose configuration"
+            echo "Creating test docker compose configuration"
             cp docker-compose.yml docker-compose.monitoring-test.yml
 
             # Update service configurations in test file
@@ -190,9 +190,9 @@ jobs:
 
           cat docker-compose.monitoring-test.yml
 
-      - name: Start services with docker-compose
+      - name: Start services with docker compose
         run: |
-          # Add health check options to docker-compose services
+          # Add health check options to docker compose services
           for service in "mail-server" "monitoring-node" "monitoring-redis" "redis-exporter" "monitoring-dashboard" "monitoring-metrics"; do
             if grep -q "$service:" docker-compose.monitoring-test.yml; then
               # Check if healthcheck section already exists
@@ -203,17 +203,17 @@ jobs:
             fi
           done
 
-          docker-compose -f docker-compose.monitoring-test.yml up -d mail-server monitoring-node monitoring-redis redis-exporter monitoring-dashboard monitoring-metrics
+          docker compose -f docker-compose.monitoring-test.yml up -d mail-server monitoring-node monitoring-redis redis-exporter monitoring-dashboard monitoring-metrics
           # Wait for services to initialize
           sleep 30
 
           # Wait for all services to be healthy
           echo "Waiting for services to be healthy..."
           for service in mail-server monitoring-node monitoring-redis redis-exporter monitoring-dashboard monitoring-metrics; do
-            if docker-compose -f docker-compose.monitoring-test.yml ps | grep -q $service; then
+            if docker compose -f docker-compose.monitoring-test.yml ps | grep -q $service; then
               max_retries=10
               retries=0
-              until [ $retries -ge $max_retries ] || docker-compose -f docker-compose.monitoring-test.yml ps | grep $service | grep -q "(healthy)"; do
+              until [ $retries -ge $max_retries ] || docker compose -f docker-compose.monitoring-test.yml ps | grep $service | grep -q "(healthy)"; do
                 retries=$((retries+1))
                 echo "Waiting for $service to be healthy (attempt $retries/$max_retries)..."
                 sleep 10
@@ -221,42 +221,42 @@ jobs:
 
               if [ $retries -ge $max_retries ]; then
                 echo "$service did not become healthy within timeout"
-                docker-compose -f docker-compose.monitoring-test.yml logs $service
+                docker compose -f docker-compose.monitoring-test.yml logs $service
               fi
             fi
           done
 
-          docker-compose -f docker-compose.monitoring-test.yml ps
+          docker compose -f docker-compose.monitoring-test.yml ps
 
       - name: Test service health endpoints
         run: |
           # Test each service that exists
-          if docker-compose -f docker-compose.monitoring-test.yml ps | grep -q mail-server; then
+          if docker compose -f docker-compose.monitoring-test.yml ps | grep -q mail-server; then
             echo "Testing mail-server health..."
             curl -s --fail http://localhost:8025/health || { echo "mail-server health check failed"; exit 1; }
           fi
 
-          if docker-compose -f docker-compose.monitoring-test.yml ps | grep -q monitoring-node; then
+          if docker compose -f docker-compose.monitoring-test.yml ps | grep -q monitoring-node; then
             echo "Testing monitoring-node health..."
             curl -s --fail http://localhost:9100/metrics || { echo "monitoring-node health check failed"; exit 1; }
           fi
 
-          if docker-compose -f docker-compose.monitoring-test.yml ps | grep -q monitoring-redis; then
+          if docker compose -f docker-compose.monitoring-test.yml ps | grep -q monitoring-redis; then
             echo "Testing monitoring-redis health..."
-            docker exec $(docker-compose -f docker-compose.monitoring-test.yml ps -q monitoring-redis) redis-cli ping | grep -q PONG || { echo "monitoring-redis health check failed"; exit 1; }
+            docker exec $(docker compose -f docker-compose.monitoring-test.yml ps -q monitoring-redis) redis-cli ping | grep -q PONG || { echo "monitoring-redis health check failed"; exit 1; }
           fi
 
-          if docker-compose -f docker-compose.monitoring-test.yml ps | grep -q redis-exporter; then
+          if docker compose -f docker-compose.monitoring-test.yml ps | grep -q redis-exporter; then
             echo "Testing redis-exporter health..."
             curl -s --fail http://localhost:9121/metrics || { echo "redis-exporter health check failed"; exit 1; }
           fi
 
-          if docker-compose -f docker-compose.monitoring-test.yml ps | grep -q monitoring-dashboard; then
+          if docker compose -f docker-compose.monitoring-test.yml ps | grep -q monitoring-dashboard; then
             echo "Testing monitoring-dashboard health..."
             curl -s --fail http://localhost:3000/api/health || { echo "monitoring-dashboard health check failed"; exit 1; }
           fi
 
-          if docker-compose -f docker-compose.monitoring-test.yml ps | grep -q monitoring-metrics; then
+          if docker compose -f docker-compose.monitoring-test.yml ps | grep -q monitoring-metrics; then
             echo "Testing monitoring-metrics health..."
             curl -s --fail http://localhost:9090/-/healthy || { echo "monitoring-metrics health check failed"; exit 1; }
           fi
@@ -267,8 +267,8 @@ jobs:
         run: |
           # Loop through services to test metrics endpoints
           for service in "mail-server" "monitoring-node" "monitoring-redis" "redis-exporter" "monitoring-dashboard" "monitoring-metrics"; do
-            if docker-compose -f docker-compose.monitoring-test.yml ps | grep -q $service; then
-              PORT=$(docker-compose -f docker-compose.monitoring-test.yml port $service 9091 | cut -d: -f2 || echo "")
+            if docker compose -f docker-compose.monitoring-test.yml ps | grep -q $service; then
+              PORT=$(docker compose -f docker-compose.monitoring-test.yml port $service 9091 | cut -d: -f2 || echo "")
               if [ ! -z "$PORT" ]; then
                 echo "Testing $service metrics on port $PORT..."
                 curl -s http://localhost:$PORT/metrics | grep -q "service_health" || { echo "$service metrics check failed"; exit 1; }
@@ -282,7 +282,7 @@ jobs:
 
       - name: Stop services
         if: always()
-        run: docker-compose -f docker-compose.monitoring-test.yml down -v
+        run: docker compose -f docker-compose.monitoring-test.yml down -v
 
   # Create prometheus alert rules if they don't exist
   create-alert-rules:
@@ -363,7 +363,7 @@ jobs:
 
       - name: Upload alert rules artifact
         if: steps.create-rules.outputs.created == 'true' || steps.check-rules.outputs.exists == 'true'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: prometheus-alert-rules
           path: monitoring/prometheus/alerts/service_health.yml
@@ -448,7 +448,7 @@ jobs:
           cat MONITORING-STATUS-REPORT.md
 
       - name: Upload status report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: monitoring-status-report
           path: MONITORING-STATUS-REPORT.md

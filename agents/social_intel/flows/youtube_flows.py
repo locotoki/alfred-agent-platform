@@ -21,6 +21,8 @@ from sentence_transformers import SentenceTransformer
 
 from ..models.youtube_api import YouTubeAPI
 from ..models.youtube_models import (
+    
+,
     BlueprintResult,
     NicheScoutResult,
     YouTubeBlueprint,
@@ -31,17 +33,13 @@ from ..models.youtube_models import (
 from ..models.youtube_vectors import YouTubeVectorStorage
 
 logger = structlog.get_logger(__name__)
-
-
 # Initialize sentence transformer for embeddings
 @task(name="initialize_sentence_transformer")
 def initialize_sentence_transformer():
     """Initialize the sentence transformer model for embeddings"""
     return SentenceTransformer("all-MiniLM-L6-v2")
 
-
 # --- Niche Scout Flow Tasks ---
-
 
 @task(name="harvest_youtube_signals")
 async def harvest_youtube_signals(queries: List[str]) -> pd.DataFrame:
@@ -83,7 +81,6 @@ async def harvest_youtube_signals(queries: List[str]) -> pd.DataFrame:
 
     return df
 
-
 @task(name="score_cluster_niches")
 def score_cluster_niches(signals_df: pd.DataFrame) -> pd.DataFrame:
     """Score and cluster the niches"""
@@ -118,7 +115,6 @@ def score_cluster_niches(signals_df: pd.DataFrame) -> pd.DataFrame:
 
     return latest
 
-
 @task(name="store_niche_vectors")
 async def store_niche_vectors(
     niches_df: pd.DataFrame, vector_storage: YouTubeVectorStorage, sentence_transformer
@@ -143,7 +139,6 @@ async def store_niche_vectors(
         await vector_storage.store_niche_vector(niche_id, niche_data, niche_embeddings[i])
 
     logger.info("niche_vectors_stored", count=len(niches_df))
-
 
 @task(name="generate_niche_scout_digest")
 def generate_niche_scout_digest(trending_niches: pd.DataFrame) -> str:
@@ -176,9 +171,7 @@ def generate_niche_scout_digest(trending_niches: pd.DataFrame) -> str:
 
     return "".join(summary)
 
-
 # --- Blueprint Flow Tasks ---
-
 
 @task(name="get_top_video_for_niche")
 async def get_top_video_for_niche(niche: str) -> str:
@@ -206,7 +199,6 @@ async def get_top_video_for_niche(niche: str) -> str:
 
     return f"https://www.youtube.com/watch?v={video_id}"
 
-
 @task(name="ingest_seed_video")
 async def ingest_seed_video(seed_url: str) -> Dict[str, Any]:
     """Ingest metadata for the seed video"""
@@ -226,7 +218,6 @@ async def ingest_seed_video(seed_url: str) -> Dict[str, Any]:
         json.dump(video_data, f, indent=2)
 
     return video_data
-
 
 @task(name="build_query_list")
 def build_query_list(seed_data: Dict[str, Any]) -> List[str]:
@@ -250,7 +241,6 @@ def build_query_list(seed_data: Dict[str, Any]) -> List[str]:
             f.write(f"{query}\n")
 
     return query_list
-
 
 @task(name="harvest_rank_channels")
 async def harvest_rank_channels(query_list: List[str]) -> pd.DataFrame:
@@ -307,7 +297,6 @@ async def harvest_rank_channels(query_list: List[str]) -> pd.DataFrame:
     channels_df.to_csv("builder/top_channels.csv", index=False)
 
     return channels_df
-
 
 @task(name="perform_gap_analysis")
 async def perform_gap_analysis(
@@ -400,7 +389,6 @@ async def perform_gap_analysis(
     result_df.to_csv("builder/gap_report.csv", index=False)
 
     return result_df
-
 
 @task(name="generate_blueprint")
 def generate_blueprint(
@@ -543,7 +531,6 @@ def generate_blueprint(
 
     return blueprint
 
-
 @task(name="package_outputs")
 def package_outputs() -> str:
     """Package all outputs into a zip file"""
@@ -565,9 +552,7 @@ def package_outputs() -> str:
 
     return zip_path
 
-
 # --- Main Flows ---
-
 
 @flow(name="YouTube Niche Scout")
 @sync_compatible
@@ -622,7 +607,6 @@ async def youtube_niche_scout_flow(
     log.info(f"Niche Scout completed. Found {len(trending_niches)} niches.")
 
     return result
-
 
 @flow(name="YouTube Blueprint")
 @sync_compatible

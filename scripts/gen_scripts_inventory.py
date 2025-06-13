@@ -13,7 +13,6 @@ from typing import Iterator, Tuple
 
 # Script extensions to scan for
 SCRIPT_EXTENSIONS = {".sh", ".py", ".ps1", ".js", ".ts"}
-
 # Directories to skip during scan
 SKIP_DIRS = {
     ".git",
@@ -29,7 +28,6 @@ SKIP_DIRS = {
 # Patterns for backup directories
 BACKUP_PATTERNS = {"backup", "backup-", "backup_"}
 
-
 def should_skip_directory(dir_path: Path) -> bool:
     """Check if directory should be skipped during scan."""
     dir_name = dir_path.name.lower()
@@ -44,7 +42,6 @@ def should_skip_directory(dir_path: Path) -> bool:
             return True
 
     return False
-
 
 def find_script_files(root_path: Path) -> Iterator[Tuple[str, str, int]]:
     """
@@ -87,7 +84,6 @@ def find_script_files(root_path: Path) -> Iterator[Tuple[str, str, int]]:
             print(f"Warning: Error processing {item}: {e}", file=sys.stderr)
             continue
 
-
 def main() -> None:
     """Generate and output scripts inventory CSV."""
     # Find repository root (assume script is in repo/scripts/)
@@ -122,7 +118,6 @@ def main() -> None:
         if p.exists():  # ignore files already deleted (ORPHAN pruned)
             status = status_map.get(path, "UNKNOWN")
             writer.writerow([path, ext, size, status])
-
 
 if __name__ == "__main__":
     main()

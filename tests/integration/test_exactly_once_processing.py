@@ -6,7 +6,6 @@ import pytest
 
 from libs.a2a_adapter import SupabaseTransport
 
-
 @pytest.mark.integration
 class TestExactlyOnceProcessing:
     @pytest.fixture

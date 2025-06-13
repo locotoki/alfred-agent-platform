@@ -15,7 +15,6 @@ from alfred.slack.app import app, flask_app
 
 # Load environment variables from .env file
 load_dotenv()
-
 # Check if required environment variables are set
 required_env_vars = ["SLACK_BOT_TOKEN", "SLACK_APP_TOKEN", "SLACK_SIGNING_SECRET"]
 missing_vars = [var for var in required_env_vars if not os.getenv(var)]

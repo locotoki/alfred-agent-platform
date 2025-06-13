@@ -13,7 +13,6 @@ from sqlalchemy import create_engine, text
 
 from alfred.core.protocols import Service
 
-
 class AlertDataset(Service):
     """Loads and preprocesses alert data for ML training"""
 
@@ -261,11 +260,9 @@ class AlertDataset(Service):
 
         return train_dataset, test_dataset
 
-
 # CLI interface for testing
 if __name__ == "__main__":
     import argparse
-
     parser = argparse.ArgumentParser(description="Alert Dataset Loader")
     parser.add_argument("--source", required=True, help="Database URI or CSV file")
     parser.add_argument("--info", action="store_true", help="Show dataset info")
@@ -277,7 +274,6 @@ if __name__ == "__main__":
     if args.info:
         info = dataset.get_info()
         import json
-
         print(json.dumps(info, indent=2))
     else:
         X, y = dataset.prepare_training_data()

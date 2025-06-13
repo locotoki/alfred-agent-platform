@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
-      - 'docker-compose*.yml'
+      - 'docker compose*.yml'
       - '**/Dockerfile*'
       - 'bootstrap/**'
 
@@ -20,9 +20,9 @@ jobs:
         run: |
           echo "Checking for hardcoded PostgreSQL passwords..."
 
-          # Check docker-compose files
-          if grep -E "POSTGRES_PASSWORD:\s*(postgres|password|123456)" docker-compose*.yml; then
-            echo "❌ ERROR: Hardcoded password found in docker-compose files!"
+          # Check docker compose files
+          if grep -E "POSTGRES_PASSWORD:\s*(postgres|password|123456)" docker compose*.yml; then
+            echo "❌ ERROR: Hardcoded password found in docker compose files!"
             echo "Use environment variables: POSTGRES_PASSWORD: \${POSTGRES_PASSWORD:-defaultvalue}"
             exit 1
           fi

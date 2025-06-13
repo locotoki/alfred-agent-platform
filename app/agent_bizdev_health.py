@@ -4,7 +4,6 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-
 class HealthHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/health":
@@ -26,7 +25,6 @@ class HealthHandler(BaseHTTPRequestHandler):
         # Suppress logs for health checks
         if "/health" not in args[0]:
             super().log_message(format, *args)
-
 
 if __name__ == "__main__":
     server = HTTPServer(("", 8080), HealthHandler)

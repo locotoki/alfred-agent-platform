@@ -13,7 +13,6 @@ import re
 import sys
 from pathlib import Path
 
-
 def process_file(file_path: Path) -> tuple[bool, int]:
     """Process a single file to replace xfail markers.
 
@@ -49,7 +48,6 @@ def process_file(file_path: Path) -> tuple[bool, int]:
 
     return False, 0
 
-
 def main():
     """Replace benchmark xfail markers with benchmark markers."""
     # Get the project root directory
@@ -84,7 +82,6 @@ def main():
         f"\nSummary: Updated {total_files_changed} files, replaced {total_replacements} xfail markers."
     )
     return 0
-
 
 if __name__ == "__main__":
     sys.exit(main())

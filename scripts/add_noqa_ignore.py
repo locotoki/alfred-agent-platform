@@ -5,7 +5,6 @@ import subprocess
 from typing import Dict  # noqa: F401
 from typing import List, Tuple
 
-
 def run_flake8() -> str:
     """Run flake8 and return the output as a string."""
     try:
@@ -16,7 +15,6 @@ def run_flake8() -> str:
     except subprocess.CalledProcessError as e:
         print(f"Error running flake8: {e}")
         return e.stdout if e.stdout else ""
-
 
 def parse_violations(flake8_output: str) -> Dict[str, List[Tuple[str, int, str]]]:
     """Parse flake8 output and organize by file."""
@@ -38,7 +36,6 @@ def parse_violations(flake8_output: str) -> Dict[str, List[Tuple[str, int, str]]
         files_dict[filepath].append((error_code, line_num, line))
 
     return files_dict
-
 
 def add_noqa_comments(files_dict: Dict[str, List[Tuple[str, int, str]]]) -> None:
     """Add noqa comments to files with flake8 errors."""
@@ -100,7 +97,6 @@ def add_noqa_comments(files_dict: Dict[str, List[Tuple[str, int, str]]]) -> None
     for file in sorted(fixed_files):
         print(f"  - {file}")
 
-
 def main():
     # Run flake8 and get violations
     print("Running flake8 to find violations...")
@@ -112,7 +108,6 @@ def main():
 
     # Add noqa comments
     add_noqa_comments(files_dict)
-
 
 if __name__ == "__main__":
     main()

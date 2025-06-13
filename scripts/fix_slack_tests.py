@@ -10,7 +10,6 @@ These tests will be fixed in a follow-up ticket (#220).
 import re
 from pathlib import Path
 
-
 def add_xfail_to_test(file_path, test_name, reason):
     """
     Add an xfail marker to a specific test function.
@@ -51,7 +50,6 @@ def add_xfail_to_test(file_path, test_name, reason):
     print(f"Added xfail marker to {test_name} in {file_path}")
     return True
 
-
 def mark_all_tests_in_file(file_path, reason):
     """
     Add xfail markers to all test functions in a file.
@@ -71,7 +69,6 @@ def mark_all_tests_in_file(file_path, reason):
         add_xfail_to_test(file_path, test_name, reason)
 
     return len(test_functions)
-
 
 def main():
     """Add xfail markers to Slack tests."""
@@ -97,7 +94,6 @@ def main():
             print(f"Test file not found: {file_path}")
 
     print(f"Added xfail markers to {total_count} Slack tests.")
-
 
 if __name__ == "__main__":
     main()

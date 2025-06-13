@@ -2,13 +2,11 @@
 
 from alfred.utils.string_utils import split_text, truncate
 
-
 def test_truncate_no_truncation_needed() -> None:
     """Test truncation when the string is short enough."""
     result = truncate("Short string", max_length=20)
     assert result == "Short string"
     assert len(result) <= 20
-
 
 def test_truncate_with_truncation() -> None:
     """Test truncation when the string exceeds max length."""
@@ -18,7 +16,6 @@ def test_truncate_with_truncation() -> None:
     assert len(result) <= 20
     assert result == "This is a very lo..."
 
-
 def test_truncate_custom_suffix() -> None:
     """Test truncation with a custom suffix."""
     result = truncate("Truncate this text", max_length=10, suffix="[...]")
@@ -26,14 +23,12 @@ def test_truncate_custom_suffix() -> None:
     assert len(result) <= 10
     assert result == "Trunc[...]"
 
-
 def test_split_text_small_text() -> None:
     """Test splitting when text is smaller than chunk size."""
     text = "Small text"
     chunks = split_text(text, chunk_size=100)
     assert len(chunks) == 1
     assert chunks[0] == text
-
 
 def test_split_text_breaking_at_spaces() -> None:
     """Test splitting text and breaking at spaces."""
@@ -46,7 +41,6 @@ def test_split_text_breaking_at_spaces() -> None:
 
     # Check overlap
     assert chunks[0][-5:] in chunks[1]
-
 
 def test_split_text_breaking_at_newlines() -> None:
     """Test splitting text and breaking at newlines."""

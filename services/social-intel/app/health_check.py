@@ -14,7 +14,6 @@ from app.metrics import OFFLINE_MODE_GAUGE
 from app.utils.circuit_breaker import CircuitBreaker
 
 logger = structlog.get_logger(__name__)
-
 # Create a router for health check endpoints
 health_router = APIRouter(tags=["health"])
 

@@ -5,7 +5,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 def load_baseline():
     """Load baseline errors from file."""
     baseline_file = Path(".mypy-baseline.txt")
@@ -20,13 +19,11 @@ def load_baseline():
 
     return baseline_errors
 
-
 def run_mypy(args):
     """Run mypy and capture output."""
     cmd = ["mypy"] + args
     result = subprocess.run(cmd, capture_output=True, text=True)
     return result.stdout, result.stderr, result.returncode
-
 
 def filter_errors(output, baseline):
     """Filter out baseline errors from mypy output."""
@@ -44,7 +41,6 @@ def filter_errors(output, baseline):
         new_errors.append(line)
 
     return "\n".join(new_errors), error_count
-
 
 def main():
     """Execute the main logic to run mypy with baseline filtering."""
@@ -70,7 +66,6 @@ def main():
         sys.exit(1)
     else:
         sys.exit(0)
-
 
 if __name__ == "__main__":
     main()

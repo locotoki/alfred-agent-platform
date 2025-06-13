@@ -7,7 +7,6 @@ import pytest
 
 from alfred.ml.hf_embedder import HFEmbedder
 
-
 class TestHFEmbedder:
     """Test HuggingFace transformer embedder functionality."""
 
