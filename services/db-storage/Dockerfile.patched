@@ -19,3 +19,6 @@ EXPOSE 9091 # Metrics port
 ENTRYPOINT []
 CMD ["/app/patched-entrypoint.sh"]
 # To expose metrics, update your ENTRYPOINT/CMD ["healthcheck", "--export-prom", ":9091", "--", "/app/patched-entrypoint.sh"]o include: /usr/local/bin/healthcheck --export-prom :9091 &
+
+# Security: Run as non-root user
+USER 1001

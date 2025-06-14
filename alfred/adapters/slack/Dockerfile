@@ -25,6 +25,9 @@ ENV PYTHONPATH=/app
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8000/health || exit 1
 
+# Security: Run as non-root user
+USER 1001
+
 # Run the application
 EXPOSE 8000
 CMD ["uvicorn", "alfred.adapters.slack.webhook:app", "--host", "0.0.0.0", "--port", "8000"]

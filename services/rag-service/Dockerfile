@@ -27,3 +27,6 @@ EXPOSE 9091
 # Start the application with healthcheck metrics exporter
 # DO NOT REMOVE --export-prom FLAG - Required for Prometheus metrics collection
 CMD ["bash", "-c", "healthcheck serve --export-prom :9091 & exec uvicorn app.main:app --host 0.0.0.0 --port 8501"]
+
+# Security: Run as non-root user
+USER 1001

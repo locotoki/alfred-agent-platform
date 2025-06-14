@@ -21,5 +21,8 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 # Expose port
 EXPOSE ${PORT}
 
+# Security: Run as non-root user
+USER 1001
+
 # Run the application
 CMD ["node", "src/app.js"]

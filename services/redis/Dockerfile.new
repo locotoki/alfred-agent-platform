@@ -47,3 +47,6 @@ EXPOSE 9091
 
 # Use the entrypoint script to run the application
 ENTRYPOINT ["/app/entrypoint.sh"]
+
+# Security: Run as non-root user
+USER 1001

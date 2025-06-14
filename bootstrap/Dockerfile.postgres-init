@@ -6,3 +6,6 @@ COPY init-storage-schema.sh /docker-entrypoint-initdb.d/99-init-storage-schema.s
 
 # The script will run automatically when the container starts
 RUN chmod +x /docker-entrypoint-initdb.d/99-init-storage-schema.sh
+
+# Security: Run as non-root user
+USER 1001

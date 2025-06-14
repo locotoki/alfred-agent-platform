@@ -72,6 +72,9 @@ EXPOSE 9091
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:9000/health/ || exit 1
 
+# Security: Run as non-root user
+USER 1001
+
 # Run the application with healthcheck metrics exporter
 # DO NOT REMOVE --export-prom FLAG - Required for Prometheus metrics collection
 CMD ["sh", "-c", "healthcheck serve --export-prom :9091 & uvicorn app.main:app --host 0.0.0.0 --port 9000"]

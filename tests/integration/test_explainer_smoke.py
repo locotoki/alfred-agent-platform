@@ -28,7 +28,7 @@ def wait_for_service(url: str, timeout: int = 30):
 def test_explainer_smoke():
     """Smoke test for Alert Explainer service in kind."""
     explainer_url = "http://alfred-explainer:8080"
-    slack_mock_url = "http://slack-mock:3000"
+    slack_mock_url = "http://slack-mock:8000"
 
     # Load the test fixture
     fixture_path = Path(__file__).parents[2] / "fixtures/alerts/alert_critical.json"

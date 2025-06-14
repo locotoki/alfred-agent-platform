@@ -34,5 +34,8 @@ ENV PYTHONUNBUFFERED=1
 EXPOSE 8011
 EXPOSE 9091
 
+# Security: Run as non-root user
+USER 1001
+
 # Run the application with metrics export
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8011"]

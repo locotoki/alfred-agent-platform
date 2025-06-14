@@ -65,5 +65,8 @@ ENV QDRANT_URL=http://qdrant:6333
 EXPOSE 9000
 EXPOSE 9091
 
+# Security: Run as non-root user
+USER 1001
+
 # Run the application with healthcheck wrapper
 CMD ["healthcheck", "--export-prom", ":9091", "--", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "9000"]

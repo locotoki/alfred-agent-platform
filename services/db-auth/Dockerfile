@@ -20,3 +20,6 @@ USER 65532
 
 # Override the entrypoint to use our wrapper
 ENTRYPOINT ["/usr/local/bin/auth-wrapper.sh"]
+
+# Security: Run as non-root user
+USER 1001

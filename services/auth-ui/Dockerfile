@@ -20,3 +20,6 @@ EXPOSE 9091
 
 # Start nginx with healthcheck wrapper
 CMD ["healthcheck", "--export-prom", ":9091", "--", "nginx", "-g", "daemon off;"]
+
+# Security: Run as non-root user
+USER 1001

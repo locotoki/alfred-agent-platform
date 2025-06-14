@@ -32,3 +32,6 @@ USER healthcheck
 # Default command when running container
 ENTRYPOINT ["/bin/grafana-probe"]
 CMD ["--help"]
+
+# Security: Run as non-root user
+USER 1001

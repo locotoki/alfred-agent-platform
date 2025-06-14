@@ -9,7 +9,7 @@ COPY --from=healthcheck /usr/local/bin/healthcheck /usr/local/bin/healthcheck
 RUN chmod +x /usr/local/bin/healthcheck
 
 # Install necessary packages for building
-RUN apt-get update && apt-get install -y gcc git && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends gcc git && rm -rf /var/lib/apt/lists/*
 
 # Install dependencies directly - using compatible versions
 # httpx version set to 0.24.1 to be compatible with both OpenAI and Supabase
@@ -36,6 +36,9 @@ RUN mkdir -p /app/libs
 # Expose application port and metrics port
 EXPOSE 8000
 EXPOSE 9091
+
+# Security: Run as non-root user
+USER 1001
 
 # Run the application with healthcheck wrapper
 CMD ["healthcheck", "--export-prom", ":9091", "--", "python", "-m", "atlas.main"]

@@ -22,3 +22,6 @@ ENV PORT 3000
 
 # Run the application in development mode
 CMD ["npm", "run", "dev"]
+
+# Security: Run as non-root user
+USER 1001

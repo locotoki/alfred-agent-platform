@@ -16,6 +16,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Start PostgreSQL service
+        run: |
+          # Set required environment variables
+          export POSTGRES_PASSWORD=test123
+          export DB_JWT_SECRET=test-secret
+          # Start only db-postgres service
+          docker compose -f docker-compose.yml up -d db-postgres
+          # Wait for PostgreSQL to be ready
+          timeout 60 bash -c 'until docker compose exec -T db-postgres pg_isready -U postgres; do sleep 2; done'
+
+      - name: Prepare DB (pgcrypto + lock public)
+        run: |
+          docker compose exec -T db-postgres psql -U postgres <<SQL
+          CREATE EXTENSION IF NOT EXISTS pgcrypto;
+          REVOKE CREATE ON SCHEMA public FROM PUBLIC;
+          SQL
+
       - name: Check for hardcoded passwords
         run: |
           echo "Checking for hardcoded PostgreSQL passwords..."
@@ -77,3 +94,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
           exit-code: '1'
           format: 'table'
+
+      - name: Stop services
+        if: always()
+        run: docker compose down -v

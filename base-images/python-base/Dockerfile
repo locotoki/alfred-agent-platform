@@ -31,3 +31,6 @@ RUN groupadd -r alfred && useradd -r -g alfred alfred
 # Common healthcheck script
 COPY healthcheck/healthcheck.sh /usr/local/bin/healthcheck.sh
 RUN chmod +x /usr/local/bin/healthcheck.sh
+
+# Security: Run as non-root user
+USER 1001

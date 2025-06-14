@@ -12,7 +12,7 @@ COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Install curl for health check
-RUN apt-get update && apt-get install -y curl && \
+RUN apt-get update && apt-get install -y --no-install-recommends curl && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy application code
@@ -30,6 +30,9 @@ EXPOSE 9091
 # Add health check
 HEALTHCHECK --interval=30s --timeout=20s --start-period=45s --retries=5 \
   CMD curl -f http://localhost:8000/healthz || exit 1
+
+# Security: Run as non-root user
+USER 1001
 
 # Run the application with healthcheck wrapper
 CMD ["bash", "-c", "healthcheck --export-prom :9091 -- python app.py"]

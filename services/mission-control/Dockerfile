@@ -21,5 +21,8 @@ ENV PORT 3000
 # Expose port
 EXPOSE 3000
 
+# Security: Run as non-root user
+USER 1001
+
 # Simple health check server for now (until TypeScript issues are fixed)
 CMD ["node", "-e", "require('http').createServer((req,res)=>{res.writeHead(200);res.end('OK')}).listen(3000,()=>console.log('Health server on :3000'))"]

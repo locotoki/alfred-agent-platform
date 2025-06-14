@@ -30,5 +30,8 @@ ENV ENABLE_DIRECT_INFERENCE=true
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
   CMD curl -f http://localhost:8501 || exit 1
 
+# Security: Run as non-root user
+USER 1001
+
 # Run both streamlit and health server
 CMD ["sh", "-c", "streamlit run streamlit_chat.py --server.address=0.0.0.0 & uvicorn health_server:app --host 0.0.0.0 --port 8080"]

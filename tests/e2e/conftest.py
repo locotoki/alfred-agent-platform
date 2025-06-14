@@ -32,7 +32,7 @@ def wait_for_services():
     # Updated to match actual working CI core services
     services = {
         "agent-core": "http://localhost:8011/health",
-        "db-api": "http://localhost:3000/",  # db-api doesn't have /health endpoint
+        "db-api": "http://localhost:8000/",  # db-api doesn't have /health endpoint
         "pubsub-metrics": "http://localhost:9103/metrics",  # metrics endpoint
         # Note: model-registry and model-router are stub services running "sleep infinity"
     }

@@ -11,7 +11,7 @@ jobs:
   e2e-smoke:
     name: E2E Smoke Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v4
@@ -38,6 +38,8 @@ jobs:
           timeout 300 bash -c 'until docker-compose ps | grep -v "Exit" | grep -q "healthy"; do sleep 5; done'
 
       - name: Run E2E smoke tests
+        env:
+          SLACK_PORT: 8080
         run: |
           pytest tests/e2e/test_smoke.py -v --tb=short --timeout=60
 

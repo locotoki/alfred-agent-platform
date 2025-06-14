@@ -32,7 +32,7 @@ class TestCoreServices:
     def test_db_api_health(self, http_client, wait_for_services):
         """Test DB API connectivity."""
         # db-api doesn't have a health endpoint, just test it responds
-        response = http_client.get("http://localhost:3000/")
+        response = http_client.get("http://localhost:8000/")
         assert response.status_code == 200
 
     @pytest.mark.e2e

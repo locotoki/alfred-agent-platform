@@ -18,5 +18,8 @@ EXPOSE 5000
 EXPOSE 9091
 #  Metrics port
 
+# Security: Run as non-root user
+USER 1001
+
 # Start the mock service
 CMD ["healthcheck", "--export-prom", ":9091", "--", "node", "mock-storage.js"]

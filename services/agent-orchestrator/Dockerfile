@@ -13,4 +13,8 @@ WORKDIR /app
 RUN npm install -g serve@14.2.1
 COPY --from=build /app/dist ./dist
 EXPOSE 8080
+
+# Security: Run as non-root user
+USER 1001
+
 CMD ["serve", "-s", "dist", "-l", "8080"]

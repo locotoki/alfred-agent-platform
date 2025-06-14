@@ -21,3 +21,6 @@ COPY --from=builder /healthcheck /healthcheck
 
 # Set the entrypoint
 ENTRYPOINT ["/healthcheck"]
+
+# Security: Run as non-root user
+USER 1001

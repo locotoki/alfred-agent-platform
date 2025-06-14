@@ -31,3 +31,6 @@ CMD ["healthcheck", "--export-prom", ":9091", "--", "docker-entrypoint.sh", "pos
 # Health check configuration
 HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=3 \
   CMD pg_isready -U postgres || exit 1
+
+# Security: Run as non-root user
+USER 1001

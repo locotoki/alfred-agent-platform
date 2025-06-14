@@ -20,5 +20,8 @@ HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
 
 EXPOSE 9103
 
+# Security: Run as non-root user
+USER 1001
+
 # 5. Run with uvicorn
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "9103"]

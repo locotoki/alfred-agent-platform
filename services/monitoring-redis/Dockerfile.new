@@ -32,3 +32,6 @@ LABEL maintainer="Alfred Platform Team" \
 # Use healthcheck to wrap the redis_exporter
 ENTRYPOINT ["healthcheck", "--export-prom", ":9091", "--", "/redis_exporter"]
 CMD []
+
+# Security: Run as non-root user
+USER 1001

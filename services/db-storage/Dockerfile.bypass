@@ -11,3 +11,6 @@ EXPOSE 9091 # Metrics port
 ENTRYPOINT []
 CMD ["node", "/app/bypass-migrations.js"]
 # To expose metrics, update your ENTRYPOINT/CMD to include: /usr/local/bin/healthcheck --export-prom :9091 &
+
+# Security: Run as non-root user
+USER 1001

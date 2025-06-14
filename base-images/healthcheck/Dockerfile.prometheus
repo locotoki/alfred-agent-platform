@@ -24,3 +24,6 @@ RUN chmod +x /usr/local/bin/prometheus-probe
 
 # Set the entrypoint
 ENTRYPOINT ["/usr/local/bin/prometheus-probe"]
+
+# Security: Run as non-root user
+USER 1001

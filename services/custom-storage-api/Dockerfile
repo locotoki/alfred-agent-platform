@@ -16,3 +16,6 @@ EXPOSE 5432
 
 # Use the default entrypoint from the base image
 # In production, this would include custom initialization scripts
+
+# Security: Run as non-root user
+USER 1001

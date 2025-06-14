@@ -1,4 +1,3 @@
-version: '3.8'
 
 # Production overrides for Alfred Agent Platform
 # This file configures resource limits, secrets, and production settings
@@ -13,7 +12,6 @@ x-common-resource-limits: &common-limits
       reservations:
         memory: 256M
         cpus: '0.5'
-
 x-small-resource-limits: &small-limits
   deploy:
     resources:
@@ -23,7 +21,6 @@ x-small-resource-limits: &small-limits
       reservations:
         memory: 128M
         cpus: '0.25'
-
 x-large-resource-limits: &large-limits
   deploy:
     resources:
@@ -33,18 +30,16 @@ x-large-resource-limits: &large-limits
       reservations:
         memory: 1G
         cpus: '1.0'
-
 x-common-logging: &common-logging
   logging:
     driver: json-file
     options:
       max-size: "10m"
       max-file: "3"
-
 services:
   # Core Services
   alfred-core:
-    <<: [*common-limits, *common-logging]
+    !!merge <<: [*common-limits, *common-logging]
     environment:
       - LOG_LEVEL=info
       - ENVIRONMENT=production
@@ -60,10 +55,9 @@ services:
       - crewai_api_key
       - a2a_auth_token
     restart: unless-stopped
-
   # Model Services
   model-registry:
-    <<: [*common-limits, *common-logging]
+    !!merge <<: [*common-limits, *common-logging]
     environment:
       - LOG_LEVEL=info
       - ENVIRONMENT=production
@@ -71,18 +65,16 @@ services:
     secrets:
       - model_registry_db_url
     restart: unless-stopped
-
   model-router:
-    <<: [*common-limits, *common-logging]
+    !!merge <<: [*common-limits, *common-logging]
     environment:
       - LOG_LEVEL=info
       - ENVIRONMENT=production
       - REGISTRY_URL=http://model-registry:8080
     restart: unless-stopped
-
   # Database Services
   db-postgres:
-    <<: [*large-limits, *common-logging]
+    !!merge <<: [*large-limits, *common-logging]
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?PostgreSQL password required}
       - POSTGRES_USER=postgres
@@ -92,18 +84,16 @@ services:
     secrets:
       - postgres_password
     restart: unless-stopped
-
   db-storage:
-    <<: [*common-limits, *common-logging]
+    !!merge <<: [*common-limits, *common-logging]
     environment:
       - DATABASE_URL=${STORAGE_DATABASE_URL:?Storage database URL required}
       - NODE_ENV=production
     secrets:
       - storage_db_url
     restart: unless-stopped
-
   db-auth:
-    <<: [*common-limits, *common-logging]
+    !!merge <<: [*common-limits, *common-logging]
     environment:
       - GOTRUE_DATABASE_URL=${AUTH_DATABASE_URL:?Auth database URL required}
       - GOTRUE_JWT_SECRET=${JWT_SECRET:?JWT secret required}
@@ -114,28 +104,25 @@ services:
       - jwt_secret
       - operator_token
     restart: unless-stopped
-
   # Redis Services
   redis:
-    <<: [*common-limits, *common-logging]
+    !!merge <<: [*common-limits, *common-logging]
     command: redis-server --requirepass ${REDIS_PASSWORD:?Redis password required}
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
     secrets:
       - redis_password
     restart: unless-stopped
-
   # Monitoring Services
   prometheus:
-    <<: [*common-limits, *common-logging]
+    !!merge <<: [*common-limits, *common-logging]
     environment:
       - ENVIRONMENT=production
     volumes:
       - prometheus_data_prod:/prometheus
     restart: unless-stopped
-
   grafana:
-    <<: [*common-limits, *common-logging]
+    !!merge <<: [*common-limits, *common-logging]
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:?Grafana password required}
       - GF_SERVER_ROOT_URL=https://grafana.alfred.example.com
@@ -146,10 +133,9 @@ services:
     secrets:
       - grafana_password
     restart: unless-stopped
-
   # Slack Services
   slack-adapter:
-    <<: [*small-limits, *common-logging]
+    !!merge <<: [*small-limits, *common-logging]
     environment:
       - LOG_LEVEL=info
       - ENVIRONMENT=production
@@ -159,9 +145,15 @@ services:
       - slack_token
       - slack_app_token
     restart: unless-stopped
-
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - curl -fs http://localhost:8080/health || exit 1
+      interval: 15s
+      timeout: 3s
+      retries: 5
   slack_mcp_gateway:
-    <<: [*small-limits, *common-logging]
+    !!merge <<: [*small-limits, *common-logging]
     environment:
       - NODE_ENV=production
       - SLACK_TOKEN=${SLACK_TOKEN}
@@ -170,10 +162,9 @@ services:
       - slack_token
       - redis_password
     restart: unless-stopped
-
   # Agent Services
   agent-orchestrator:
-    <<: [*common-limits, *common-logging]
+    !!merge <<: [*common-limits, *common-logging]
     environment:
       - NODE_ENV=production
       - LOG_LEVEL=info
@@ -181,9 +172,8 @@ services:
     secrets:
       - redis_password
     restart: unless-stopped
-
   social-intel:
-    <<: [*common-limits, *common-logging]
+    !!merge <<: [*common-limits, *common-logging]
     environment:
       - LOG_LEVEL=info
       - ENVIRONMENT=production
@@ -193,34 +183,30 @@ services:
       - redis_password
       - youtube_api_key
     restart: unless-stopped
-
   # UI Services
   ui-chat:
-    <<: [*small-limits, *common-logging]
+    !!merge <<: [*small-limits, *common-logging]
     environment:
       - ENVIRONMENT=production
       - API_URL=https://api.alfred.example.com
     restart: unless-stopped
-
   # Mission Control Services
   mission-control:
-    <<: [*common-limits, *common-logging]
+    !!merge <<: [*common-limits, *common-logging]
     environment:
       - NODE_ENV=production
       - NEXT_PUBLIC_API_URL=https://api.alfred.example.com
     restart: unless-stopped
-
   mission-control-simplified:
-    <<: [*small-limits, *common-logging]
+    !!merge <<: [*small-limits, *common-logging]
     environment:
       - NODE_ENV=production
       - PORT=3001
     restart: unless-stopped
-
   # Ingress Proxy (new service)
   nginx-proxy:
     image: nginx:alpine
-    <<: [*small-limits, *common-logging]
+    !!merge <<: [*small-limits, *common-logging]
     ports:
       - "443:443"
       - "80:80"
@@ -232,7 +218,6 @@ services:
       - grafana
       - ui-chat
     restart: unless-stopped
-
 # Docker Secrets
 secrets:
   openai_api_key:
@@ -265,7 +250,6 @@ secrets:
     external: true
   youtube_api_key:
     external: true
-
 # Production Volumes
 volumes:
   postgres_data_prod:
@@ -274,7 +258,6 @@ volumes:
     driver: local
   grafana_data_prod:
     driver: local
-
 # Production Networks
 networks:
   default:

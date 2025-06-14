@@ -13,5 +13,8 @@ COPY . .
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
   CMD python -c "import sys; sys.exit(0)" || exit 1
 
+# Security: Run as non-root user
+USER 1001
+
 # Default command
 CMD ["python", "-m", "alfred.core.entrypoint"]

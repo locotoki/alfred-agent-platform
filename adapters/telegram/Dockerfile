@@ -32,5 +32,8 @@ EXPOSE $PORT
 # Set health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 CMD ["/app/healthcheck.sh"]
 
+# Security: Run as non-root user
+USER 1001
+
 # Command to run the application
 CMD ["/app/start.sh"]

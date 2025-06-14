@@ -26,6 +26,9 @@ RUN apk add --update-cache --repository https://dl-cdn.alpinelinux.org/alpine/ed
 # Expose standard PostgreSQL port
 EXPOSE 5432
 
+# Security: Run as non-root user
+USER 1001
+
 # Use custom entrypoint
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["postgres"]

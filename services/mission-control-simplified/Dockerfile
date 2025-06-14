@@ -25,3 +25,6 @@ ENV PORT=3007
 
 # Start the application
 CMD ["node", "server.js"]
+
+# Security: Run as non-root user
+USER 1001

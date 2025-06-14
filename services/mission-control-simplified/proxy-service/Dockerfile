@@ -15,3 +15,6 @@ EXPOSE 3020
 
 # Start the service
 CMD ["node", "src/index.js"]
+
+# Security: Run as non-root user
+USER 1001

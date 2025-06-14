@@ -99,7 +99,7 @@ def test_app_starts_without_error(mock_bolt_app, capture_stdout):
     )
 
     # Try to start the app (this should be a no-op due to our mocks)
-    app.start(port=3000)
+    app.start(port=8000)
 
     # Create a flask app to check health endpoints
 

@@ -19,5 +19,8 @@ EXPOSE 8080
 # Default port for metrics
 EXPOSE 8081
 
+# Security: Run as non-root user
+USER 1001
+
 # Start the application
 CMD ["uvicorn", "slack_app.server:app", "--host", "0.0.0.0", "--port", "8080"]

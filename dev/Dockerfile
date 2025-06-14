@@ -5,7 +5,7 @@
 FROM python:3.11-slim as builder
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     git \
     curl \
@@ -39,7 +39,7 @@ RUN . .venv/bin/activate && \
 FROM python:3.11-slim as runtime
 
 # Install only runtime dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     && rm -rf /var/lib/apt/lists/*
 
@@ -57,6 +57,9 @@ ENV PATH="/workspace/.venv/bin:$PATH"
 # Verify no system packages contamination
 RUN test -z "$(find /usr/lib/python*/dist-packages -type f)" || \
     (echo "ERROR: System packages found in dist-packages!" && exit 1)
+
+# Security: Run as non-root user
+USER 1001
 
 # Default command
 CMD ["/bin/bash"]

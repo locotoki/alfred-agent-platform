@@ -1,0 +1,19 @@
+name: "Dependabot & Weekly Trivy"
+on:
+  schedule:
+    - cron: '0 3 * * 1'  # every Monday 03:00 UTC
+  workflow_dispatch:
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Trivy (weekly)
+        if: github.event_name == 'schedule'
+        uses: aquasecurity/trivy-action@v0.16.0
+        with:
+          scan-type: image
+          image-ref: ghcr.io/${{ github.repository }}/vector-ingest-base:ml-20250607
+          exit-code: '1'      # fail on HIGH/CRITICAL
+      - name: Dependabot auto-merge config
+        run: echo "dependabot: handled by GitHub's native app"
